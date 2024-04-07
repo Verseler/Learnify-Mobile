@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { View, Image } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
@@ -11,7 +11,10 @@ import { setItem } from "expo-secure-store";
 import { deleteItem } from "../utils/SecureStore";
 
 export default function Signup({ navigation }) {
-  signup();
+  useEffect(() => {
+    signup();
+  }, []);
+  
   const theme = useTheme();
   // const {signUp} = useContext(AuthContext);
   const [temp, setTemp] = useState("try");
@@ -100,7 +103,7 @@ export default function Signup({ navigation }) {
   async function signup() {
     console.log(1);
     try {
-      const url = "http://127.0.0.1:8000/api/signup";
+      const url = "http://10.0.2.2:8000/api/signup";
 
       const requestOptions = {
         method: "POST",
@@ -113,7 +116,7 @@ export default function Signup({ navigation }) {
       };
       console.log(2);
       const res = await fetch(url, requestOptions);
-      console.log(res)
+      console.log(res);
       const data = await res.json();
       console.log(data);
       setTemp("123");
@@ -123,7 +126,7 @@ export default function Signup({ navigation }) {
         setItem("userToken", "123123");
       }
     } catch (error) {
-      // console.log("error: ", error);
+      console.log("error: ", error);
       throw error;
     }
   }

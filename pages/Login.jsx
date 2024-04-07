@@ -2,30 +2,26 @@ import { useState } from "react";
 import { View, Image } from "react-native";
 import { Button, Text, TextInput, useTheme } from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
 
 import { formStyles as styles } from "../utils/globalStyles";
+import { getItem } from "../utils/SecureStore";
 
-export default function Signup() {
+export default function Login({ navigation }) {
   const theme = useTheme();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
-  const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [formError, setFormError] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const handleHidePassword = () =>
     setHidePassword((prevHidePassword) => !prevHidePassword);
-
-  const handleConfirmHidePassword = () =>
-    setHideConfirmPassword(
-      (prevConfirmHidePassword) => !prevConfirmHidePassword
-    );
 
   //check if data in the form are valid
   const isFormValid = () => {
@@ -48,29 +44,10 @@ export default function Signup() {
       });
       errorCount++;
     }
-    //check if password and confirm password matched
-    if (password !== confirmPassword) {
-      setFormError((prevFormError) => {
-        return {
-          ...prevFormError,
-          password: "Password doesnt matched",
-          confirmPassword: "Password doesnt matched",
-        };
-      });
-      errorCount++;
-    }
     //check if password is empty
     if (password == EMPTY) {
       setFormError((prevFormError) => {
         return { ...prevFormError, password: "Required" };
-      });
-      errorCount++;
-    }
-
-    //check if confirm password is empty
-    if (confirmPassword == EMPTY) {
-      setFormError((prevFormError) => {
-        return { ...prevFormError, confirmPassword: "Required" };
       });
       errorCount++;
     }
@@ -82,6 +59,7 @@ export default function Signup() {
   const handleSubmitForm = () => {
     if (isFormValid()) {
       console.log("login success");
+      () => navigation.dispatch(StackActions.replace('LandingPage'))
     } else {
       console.log("login failed");
     }
@@ -95,7 +73,7 @@ export default function Signup() {
           source={require("../assets/Icons/Logo.png")}
         />
         <Text variant="headlineSmall" style={styles.title}>
-          Signup
+          Log In
         </Text>
         <Image
           style={styles.star}
@@ -125,6 +103,12 @@ export default function Signup() {
             onChangeText={setEmail}
             error={formError.email}
           />
+          <MaterialIcons
+            style={styles.fieldIcon}
+            name="email"
+            size={18}
+            color="gray"
+          />
           {formError.email && (
             <Text style={styles.errorLabel}>{formError.email}</Text>
           )}
@@ -152,6 +136,12 @@ export default function Signup() {
             onChangeText={setPassword}
             error={formError.password}
           />
+          <FontAwesome5
+            style={styles.fieldIcon}
+            name="key"
+            color="gray"
+            size={16}
+          />
           <Feather
             name={hidePassword ? "eye-off" : "eye"}
             size={24}
@@ -162,44 +152,19 @@ export default function Signup() {
           {formError.password && (
             <Text style={styles.errorLabel}>{formError.password}</Text>
           )}
-        </View>
-
-        <View style={styles.formGroup}>
-          <Text
-            style={[
-              styles.fieldLabel,
-              formError.confirmPassword && styles.errorfieldLabel,
-            ]}
-          >
-            Confirm Password
-          </Text>
-          <TextInput
-            mode="outlined"
-            secureTextEntry={hideConfirmPassword}
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              styles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            error={formError.confirmPassword}
-          />
-          <Feather
-            name={hideConfirmPassword ? "eye-off" : "eye"}
-            size={24}
-            style={styles.eye}
-            color="gray"
-            onPress={handleConfirmHidePassword}
-          />
-          {formError.confirmPassword && (
-            <Text style={styles.errorLabel}>{formError.confirmPassword}</Text>
-          )}
+          <View style={styles.forgotPasswordWrapper}>
+            <Button
+              rippleColor="white"
+              theme={{ roundness: 2 }}
+              textColor={theme.colors.onSurface}
+              onPress={() => console.log(getItem("userToken"))}
+            >
+              Forgot Password?
+            </Button>
+          </View>
         </View>
         <Button
           theme={{ roundness: 2 }}
-          style={{ marginTop: 12 }}
           mode="contained"
           onPress={handleSubmitForm}
         >
@@ -209,20 +174,20 @@ export default function Signup() {
               { color: theme.colors.onPrimary },
             ]}
           >
-            Sign up
+            Login
           </Text>
         </Button>
       </View>
       <View style={styles.navLink}>
         <Text style={{ color: theme.colors.secondary }}>
-          Already have an account?
+          Don’t have an account?
         </Text>
         <Button
           rippleColor="white"
           theme={{ roundness: 2 }}
-          onPress={() => console.log("Pressed")}
+          onPress={() => navigation.dispatch(StackActions.replace('Signup'))}
         >
-          Login
+          Sign up
         </Button>
       </View>
     </View>

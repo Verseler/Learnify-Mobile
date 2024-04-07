@@ -2,6 +2,8 @@ import { StyleSheet } from "react-native";
 
 const formStyles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: "center",
     paddingHorizontal: 14,
     paddingVertical: 30,
     backgroundColor: "white",
@@ -9,7 +11,7 @@ const formStyles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    columnGap: 16,
+    columnGap: 6,
     marginBottom: 50,
   },
   logo: {
@@ -28,13 +30,14 @@ const formStyles = StyleSheet.create({
     fontWeight: "bold",
   },
   form: {
-    rowGap: 14,
+    rowGap: 16,
   },
   formGroup: {
     rowGap: 5,
   },
   formControl: {
     borderRadius: 20,
+    paddingStart: 24
   },
   fieldLabel: {
     marginLeft: 6,
@@ -47,6 +50,11 @@ const formStyles = StyleSheet.create({
     marginLeft: 6,
     fontSize: 12,
   },
+  fieldIcon: {
+    position: "absolute",
+    top: 46,
+    left: 14
+  },
   eye: {
     position: "absolute",
     top: 42,
@@ -57,7 +65,8 @@ const formStyles = StyleSheet.create({
   },
   submitButtonLabel: {
     padding: 5,
-    fontSize: 18,
+    fontSize: 16,
+    fontWeight: "bold"
   },
   navLink: {
     flexDirection: "row",
