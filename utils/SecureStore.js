@@ -16,6 +16,7 @@ async function removeSecureStore(key) {
   const keyExist = getSecureStore(key);
 
   if (keyExist) await SecureStore.deleteItemAsync(key);
+  console.log(userToken)
 }
 
 export { getSecureStore, setSecureStore, removeSecureStore };

@@ -1,20 +1,31 @@
 import { useState } from "react";
-import { BottomNavigation, Text, useTheme } from "react-native-paper";
+import { BottomNavigation, Text, useTheme, Button } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
-import { getItem } from "expo-secure-store";
+import { getSecureStore } from "../utils/SecureStore";
+import useStore from "../hooks/useStore";
 
 const HomeRoute = () => {
-  const token = getItem("userToken");
-
+  const userToken = getSecureStore("userToken");
   return (
     <View style={styles.sample}>
       <Text>Music</Text>
-      <Text>{token}</Text>
+      <Text>{userToken}</Text>
     </View>
   );
 };
 
-const ProfileRoute = () => <Text>Albums</Text>;
+const ProfileRoute = () => {
+  const signOut = useStore((state) => state.signOut);
+
+  return (
+    <View style={styles.sample}>
+      <Text>Albums</Text>
+      <Button mode="contained" onPress={signOut}>
+        Signout
+      </Button>
+    </View>
+  );
+};
 
 export default function LandingPage() {
   const [index, setIndex] = useState(0);

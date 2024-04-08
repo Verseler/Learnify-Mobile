@@ -6,6 +6,7 @@ import { useEffect } from "react";
 
 import theme from "./utils/theme";
 import useStore from "./hooks/useStore";
+import { getSecureStore } from "./utils/SecureStore";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import LandingPage from "./pages/LandingPage";
@@ -14,6 +15,15 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   const userIsAuthenticated = useStore((state) => state.userIsAuthenticated);
+  const signIn = useStore((state) => state.signIn);
+
+  //if token exist then signIn user
+  useEffect(() => {
+    const userToken = getSecureStore("userToken");
+    if (userToken) {
+      signIn("userToken", userToken);
+    }
+  }, []);
 
   return (
     <PaperProvider theme={theme}>

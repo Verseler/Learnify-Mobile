@@ -1,4 +1,9 @@
 import { useState } from "react";
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
 import { View, Image } from "react-native";
 import {
   Button,
@@ -7,26 +12,22 @@ import {
   useTheme,
   Snackbar,
 } from "react-native-paper";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { StackActions } from "@react-navigation/native";
 
 import { formStyles as styles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 
 export default function Signup({ navigation }) {
   const theme = useTheme();
-  
-  const addUserToken = useStore((state) => state.addUserToken);
-  const [serverError, setServerError] = useState("");
+
+  const signIn = useStore((state) => state.signIn);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
+  const [serverError, setServerError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState({
     name: "",
     email: "",
@@ -45,10 +46,6 @@ export default function Signup({ navigation }) {
       (prevConfirmHidePassword) => !prevConfirmHidePassword
     );
 
-  const handleSubmitForm = () => {
-    if (isFormValid()) signup();
-  };
-
   //check if data in the form are valid
   const isFormValid = () => {
     const EMPTY = "";
@@ -56,6 +53,13 @@ export default function Signup({ navigation }) {
 
     setFormError({ email: "", password: "" });
 
+    //check if email is empty
+    if (name == EMPTY) {
+      setFormError((prevFormError) => {
+        return { ...prevFormError, name: "Required" };
+      });
+      errorCount++;
+    }
     //check if email has @ and .com
     if (!/\S+@\S+\.\S+/.test(email)) {
       setFormError((prevFormError) => {
@@ -81,6 +85,14 @@ export default function Signup({ navigation }) {
       });
       errorCount++;
     }
+    //check if password is more than 8 characters
+    if (password.length < 8) {
+      setFormError((prevFormError) => {
+        return { ...prevFormError, password: "Minimum of 8 characters" };
+      });
+      errorCount++;
+    }
+
     //check if password is empty
     if (password == EMPTY) {
       setFormError((prevFormError) => {
@@ -101,10 +113,15 @@ export default function Signup({ navigation }) {
     return errorCount <= 0;
   };
 
+  const handleSubmitForm = () => {
+    if (isFormValid()) signup();
+  };
+
   async function signup() {
     try {
-      const url = "http://192.168.1.7:8000/api/signup";
+      setIsLoading(true);
 
+      const url = "http://192.168.1.7:8000/api/signup";
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -114,18 +131,22 @@ export default function Signup({ navigation }) {
           password: password,
         }),
       };
-
       const res = await fetch(url, requestOptions);
       const data = await res.json();
 
+      //if signup failed display error message
       if (!data["success"]) {
         setServerError(data.message);
-      } else {
-        addUserToken("userToken", data.token);
+      }
+      //if signup successful then signin
+      else {
+        signIn(data.token);
       }
     } catch (error) {
-      console.log("error: ", error);
-      throw error;
+      setServerError(error.message);
+    }
+    finally {
+      setIsLoading(false);
     }
   }
 
@@ -293,6 +314,8 @@ export default function Signup({ navigation }) {
           )}
         </View>
         <Button
+          loading={isLoading}
+          disabled={isLoading}
           theme={{ roundness: 2 }}
           style={{ marginTop: 12 }}
           mode="contained"

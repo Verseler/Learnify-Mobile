@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { Feather } from "@expo/vector-icons";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { MaterialIcons } from "@expo/vector-icons";
+import { StackActions } from "@react-navigation/native";
 import { View, Image } from "react-native";
 import {
   Button,
@@ -7,10 +11,6 @@ import {
   useTheme,
   Snackbar,
 } from "react-native-paper";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { StackActions } from "@react-navigation/native";
 
 import { formStyles as styles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
@@ -18,11 +18,12 @@ import useStore from "../hooks/useStore";
 export default function Login({ navigation }) {
   const theme = useTheme();
 
-  const addUserToken = useStore((state) => state.addUserToken);
-  const [serverError, setServerError] = useState("");
+  const signIn = useStore((state) => state.signIn);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
+  const [serverError, setServerError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [formError, setFormError] = useState({
     name: "",
     email: "",
@@ -56,6 +57,15 @@ export default function Login({ navigation }) {
       });
       errorCount++;
     }
+
+    //check if password is more than 8 characters
+    if (password.length < 8) {
+      setFormError((prevFormError) => {
+        return { ...prevFormError, password: "Minimum of 8 characters" };
+      });
+      errorCount++;
+    }
+
     //check if password is empty
     if (password == EMPTY) {
       setFormError((prevFormError) => {
@@ -74,8 +84,9 @@ export default function Login({ navigation }) {
 
   async function login() {
     try {
-      const url = "http://192.168.1.7:8000/api/login";
+      setIsLoading(true);
 
+      const url = "http://192.168.1.7:8000/api/login";
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,14 +99,18 @@ export default function Login({ navigation }) {
       const res = await fetch(url, requestOptions);
       const data = await res.json();
 
+      //if login validation failed then display error
       if (!data["success"]) {
         setServerError(data.message);
-      } else {
-        addUserToken("userToken", data.token);
+      }
+      //if login validation success then signup then navigate to home page
+      else {
+        signIn(data.token);
       }
     } catch (error) {
-      console.log("error: ", error);
-      throw error;
+      setServerError(error.message);
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -200,6 +215,8 @@ export default function Login({ navigation }) {
           </View>
         </View>
         <Button
+          loading={isLoading}
+          disabled={isLoading}
           theme={{ roundness: 2 }}
           mode="contained"
           onPress={handleSubmitForm}

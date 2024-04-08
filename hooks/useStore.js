@@ -3,12 +3,12 @@ import { setSecureStore, removeSecureStore } from "../utils/SecureStore";
 
 const useStore = create((set) => ({
   userIsAuthenticated: false,
-  addUserToken: (key, value) => {
-    setSecureStore(key, value);
+  signIn: (value) => {
+    setSecureStore("userToken", value);
     set({ userIsAuthenticated: true });
   },
-  removeUserToken: (key) => {
-    removeSecureStore(key);
+  signOut: () => {
+    removeSecureStore("userToken");
     set({ userIsAuthenticated: false });
   },
 }));
