@@ -26,6 +26,11 @@ const formStyles = StyleSheet.create({
     right: 0,
     top: -24,
   },
+  snackBar: {
+    width: "100%",
+    marginHorizontal: 14,
+    backgroundColor: "red"
+  },
   title: {
     fontWeight: "bold",
   },

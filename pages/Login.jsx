@@ -1,24 +1,36 @@
 import { useState } from "react";
 import { View, Image } from "react-native";
-import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import {
+  Button,
+  Text,
+  TextInput,
+  useTheme,
+  Snackbar,
+} from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
 
 import { formStyles as styles } from "../utils/globalStyles";
-import { getItem } from "../utils/SecureStore";
+import useStore from "../hooks/useStore";
 
 export default function Login({ navigation }) {
   const theme = useTheme();
 
+  const addUserToken = useStore((state) => state.addUserToken);
+  const [serverError, setServerError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
   const [formError, setFormError] = useState({
+    name: "",
     email: "",
     password: "",
   });
+
+  /* Handlers */
+  const onDismissSnackBarHandler = () => setServerError("");
 
   const handleHidePassword = () =>
     setHidePassword((prevHidePassword) => !prevHidePassword);
@@ -57,13 +69,35 @@ export default function Login({ navigation }) {
   };
 
   const handleSubmitForm = () => {
-    if (isFormValid()) {
-      console.log("login success");
-      () => navigation.dispatch(StackActions.replace('LandingPage'))
-    } else {
-      console.log("login failed");
-    }
+    if (isFormValid()) login();
   };
+
+  async function login() {
+    try {
+      const url = "http://192.168.1.7:8000/api/login";
+
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+        }),
+      };
+
+      const res = await fetch(url, requestOptions);
+      const data = await res.json();
+
+      if (!data["success"]) {
+        setServerError(data.message);
+      } else {
+        addUserToken("userToken", data.token);
+      }
+    } catch (error) {
+      console.log("error: ", error);
+      throw error;
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -82,6 +116,7 @@ export default function Login({ navigation }) {
       </View>
 
       <View style={styles.form}>
+        {/* Email Field */}
         <View style={styles.formGroup}>
           <Text
             style={[
@@ -114,6 +149,7 @@ export default function Login({ navigation }) {
           )}
         </View>
 
+        {/* Password Field */}
         <View style={styles.formGroup}>
           <Text
             style={[
@@ -185,11 +221,19 @@ export default function Login({ navigation }) {
         <Button
           rippleColor="white"
           theme={{ roundness: 2 }}
-          onPress={() => navigation.dispatch(StackActions.replace('Signup'))}
+          onPress={() => navigation.dispatch(StackActions.replace("Signup"))}
         >
           Sign up
         </Button>
       </View>
+
+      <Snackbar
+        style={styles.snackBar}
+        visible={serverError}
+        onDismiss={onDismissSnackBarHandler}
+      >
+        {serverError}
+      </Snackbar>
     </View>
   );
 }

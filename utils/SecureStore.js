@@ -1,16 +1,21 @@
 import * as SecureStore from "expo-secure-store";
 
-function setItem(key, value) {
+function setSecureStore(key, value) {
+  const keyExist = getSecureStore(key);
+
+  if (keyExist) removeSecureStore(key);
   SecureStore.setItem(key, value);
 }
 
-function getItem(key) {
+function getSecureStore(key) {
   let result = SecureStore.getItem(key);
   return result ? result : null;
 }
 
-async function deleteItem(key) {
-  await SecureStore.deleteItemAsync(key)
+async function removeSecureStore(key) {
+  const keyExist = getSecureStore(key);
+
+  if (keyExist) await SecureStore.deleteItemAsync(key);
 }
 
-export { setItem, getItem, deleteItem };
+export { getSecureStore, setSecureStore, removeSecureStore };

@@ -1,34 +1,41 @@
-import { useState, useContext, useEffect } from "react";
+import { useState } from "react";
 import { View, Image } from "react-native";
-import { Button, Text, TextInput, useTheme } from "react-native-paper";
+import {
+  Button,
+  Text,
+  TextInput,
+  useTheme,
+  Snackbar,
+} from "react-native-paper";
 import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { StackActions } from "@react-navigation/native";
 
 import { formStyles as styles } from "../utils/globalStyles";
-import { setItem } from "expo-secure-store";
-import { deleteItem } from "../utils/SecureStore";
+import useStore from "../hooks/useStore";
 
 export default function Signup({ navigation }) {
-  useEffect(() => {
-    signup();
-  }, []);
-  
   const theme = useTheme();
-  // const {signUp} = useContext(AuthContext);
-  const [temp, setTemp] = useState("try");
-
+  
+  const addUserToken = useStore((state) => state.addUserToken);
+  const [serverError, setServerError] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [hidePassword, setHidePassword] = useState(true);
   const [hideConfirmPassword, setHideConfirmPassword] = useState(true);
   const [formError, setFormError] = useState({
+    name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  /* Handlers */
+  const onDismissSnackBarHandler = () => setServerError("");
 
   const handleHidePassword = () =>
     setHidePassword((prevHidePassword) => !prevHidePassword);
@@ -37,6 +44,10 @@ export default function Signup({ navigation }) {
     setHideConfirmPassword(
       (prevConfirmHidePassword) => !prevConfirmHidePassword
     );
+
+  const handleSubmitForm = () => {
+    if (isFormValid()) signup();
+  };
 
   //check if data in the form are valid
   const isFormValid = () => {
@@ -90,40 +101,27 @@ export default function Signup({ navigation }) {
     return errorCount <= 0;
   };
 
-  const handleSubmitForm = () => {
-    if (isFormValid()) {
-      console.log("login success");
-      // signUp("ads");
-      signup();
-    } else {
-      console.log("login failed");
-    }
-  };
-
   async function signup() {
-    console.log(1);
     try {
-      const url = "http://10.0.2.2:8000/api/signup";
+      const url = "http://192.168.1.7:8000/api/signup";
 
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: "trytry",
-          email: "keroro@gmail.com",
-          password: "Keroro2003",
+          name: name,
+          email: email,
+          password: password,
         }),
       };
-      console.log(2);
+
       const res = await fetch(url, requestOptions);
-      console.log(res);
       const data = await res.json();
-      console.log(data);
-      setTemp("123");
+
       if (!data["success"]) {
-        // console.log(data);
+        setServerError(data.message);
       } else {
-        setItem("userToken", "123123");
+        addUserToken("userToken", data.token);
       }
     } catch (error) {
       console.log("error: ", error);
@@ -148,7 +146,39 @@ export default function Signup({ navigation }) {
       </View>
 
       <View style={styles.form}>
-        <Text>{temp}</Text>
+        {/* Name Field */}
+        <View style={styles.formGroup}>
+          <Text
+            style={[
+              styles.fieldLabel,
+              formError.name && styles.errorfieldLabel,
+            ]}
+          >
+            Name
+          </Text>
+          <TextInput
+            mode="outlined"
+            outlineColor="lightgray"
+            theme={{ roundness: 10 }}
+            style={[
+              styles.formControl,
+              { backgroundColor: theme.colors.background },
+            ]}
+            value={name}
+            onChangeText={setName}
+            error={formError.name}
+          />
+          <MaterialCommunityIcons
+            style={styles.fieldIcon}
+            name="account"
+            size={18}
+            color="gray"
+          />
+          {formError.name && (
+            <Text style={styles.errorLabel}>{formError.name}</Text>
+          )}
+        </View>
+        {/* Email Field */}
         <View style={styles.formGroup}>
           <Text
             style={[
@@ -181,6 +211,7 @@ export default function Signup({ navigation }) {
           )}
         </View>
 
+        {/* Password Field */}
         <View style={styles.formGroup}>
           <Text
             style={[
@@ -221,6 +252,7 @@ export default function Signup({ navigation }) {
           )}
         </View>
 
+        {/* Confirm Password Field */}
         <View style={styles.formGroup}>
           <Text
             style={[
@@ -288,6 +320,14 @@ export default function Signup({ navigation }) {
           Login
         </Button>
       </View>
+
+      <Snackbar
+        style={styles.snackBar}
+        visible={serverError}
+        onDismiss={onDismissSnackBarHandler}
+      >
+        {serverError}
+      </Snackbar>
     </View>
   );
 }
