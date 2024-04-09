@@ -4,6 +4,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
 import { View, Image } from "react-native";
+import {Appbar} from "react-native-paper";
 import {
   Button,
   Text,
@@ -116,20 +117,19 @@ export default function Login({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+       
+       <Appbar.Header style={[styles.header,{ backgroundColor: theme.colors.background }]}>
         <Image
           style={styles.logo}
           source={require("../assets/Icons/Logo.png")}
         />
-        <Text variant="headlineSmall" style={styles.title}>
-          Log In
-        </Text>
+        <Appbar.Content title="Log In" titleStyle={{ fontWeight: "bold", fontSize: 26 }} />
         <Image
           style={styles.star}
           source={require("../assets/Icons/star.png")}
         />
-      </View>
-
+      </Appbar.Header>
+      
       <View style={styles.form}>
         {/* Email Field */}
         <View style={styles.formGroup}>
@@ -208,7 +208,7 @@ export default function Login({ navigation }) {
               rippleColor="white"
               theme={{ roundness: 2 }}
               textColor={theme.colors.onSurface}
-              onPress={() => console.log(getItem("userToken"))}
+              onPress={() => console.log("forgot")}
             >
               Forgot Password?
             </Button>

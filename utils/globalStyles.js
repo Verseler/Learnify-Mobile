@@ -9,8 +9,6 @@ const formStyles = StyleSheet.create({
     backgroundColor: "white",
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
     columnGap: 6,
     marginBottom: 50,
   },
