@@ -1,25 +1,17 @@
 import { useState } from "react";
-import { BottomNavigation, Text, useTheme, Button } from "react-native-paper";
+import { BottomNavigation, Text, Button } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { getSecureStore } from "../utils/SecureStore";
 import useStore from "../hooks/useStore";
 
-const HomeRoute = () => {
-  const userToken = getSecureStore("userToken");
-  return (
-    <View style={styles.sample}>
-      <Text>Music</Text>
-      <Text>{userToken}</Text>
-    </View>
-  );
-};
+import Home from "./Home";
 
 const ProfileRoute = () => {
   const signOut = useStore((state) => state.signOut);
-
+  const userToken = getSecureStore("userToken");
   return (
     <View style={styles.sample}>
-      <Text>Albums</Text>
+      <Text>{userToken}</Text>
       <Button mode="contained" onPress={signOut}>
         Signout
       </Button>
@@ -45,13 +37,14 @@ export default function LandingPage() {
   ]);
 
   const renderScene = BottomNavigation.SceneMap({
-    home: HomeRoute,
+    home: Home,
     profile: ProfileRoute,
   });
 
   return (
     <View style={styles.container}>
       <BottomNavigation
+        barStyle={{ backgroundColor: theme.colors.surface }}
         navigationState={{ index, routes }}
         onIndexChange={setIndex}
         renderScene={renderScene}

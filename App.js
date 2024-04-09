@@ -21,7 +21,7 @@ export default function App() {
   useEffect(() => {
     const userToken = getSecureStore("userToken");
     if (userToken) {
-      signIn("userToken", userToken);
+      signIn(userToken);
     }
   }, []);
 
