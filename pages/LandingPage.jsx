@@ -5,6 +5,7 @@ import { getSecureStore } from "../utils/SecureStore";
 import useStore from "../hooks/useStore";
 
 import Home from "./Home";
+import Course from "./Course";
 
 const ProfileRoute = () => {
   const signOut = useStore((state) => state.signOut);
@@ -19,7 +20,7 @@ const ProfileRoute = () => {
   );
 };
 
-export default function LandingPage() {
+export default function LandingPage(props) {
   const [index, setIndex] = useState(0);
   const [routes] = useState([
     {
@@ -40,6 +41,7 @@ export default function LandingPage() {
     home: Home,
     profile: ProfileRoute,
   });
+
 
   return (
     <View style={styles.container}>

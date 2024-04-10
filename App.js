@@ -10,6 +10,7 @@ import { getSecureStore } from "./utils/SecureStore";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import LandingPage from "./pages/LandingPage";
+import Course from "./pages/Course";
 
 const Stack = createNativeStackNavigator();
 
@@ -35,7 +36,10 @@ export default function App() {
           }}
         >
           {userIsAuthenticated ? (
-            <Stack.Screen name="LandingPage" component={LandingPage} />
+            <>
+              <Stack.Screen name="LandingPage" component={LandingPage} />
+              <Stack.Screen name="Course" component={Course} />
+            </>
           ) : (
             <>
               <Stack.Screen name="Login" component={Login} />

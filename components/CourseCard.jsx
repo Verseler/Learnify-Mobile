@@ -1,25 +1,29 @@
 import { Text, Card, Button, Avatar, ProgressBar } from "react-native-paper";
 import { StyleSheet, View, Image } from "react-native";
-import { Shadow } from "react-native-shadow-2";
+import { useNavigation } from "@react-navigation/native";
 
-export default function CourseCard({ name, progress, courseName }) {
+export default function CourseCard({ course }) {
+  const navigation = useNavigation();
+
   const OwnerAvatar = (props) => (
-    <Avatar.Image {...props} source={{ uri: "https://picsum.photos/700" }} />
+    <Avatar.Image {...props} source={{ uri: course.avatarSrc }} />
   );
+
   const CourseName = () => (
     <Text
       variant="titleMedium"
       style={{ fontWeight: "bold", textTransform: "uppercase" }}
     >
-      {courseName}
+      {course.courseName}
     </Text>
   );
+
   const Progress = () => {
-    const progressInPercentage = progress * 100;
+    const progressInPercentage = course.progress * 100;
 
     return (
       <View style={{ gap: 4 }}>
-        <ProgressBar progress={progress} />
+        <ProgressBar progress={course.progress} />
         <Text style={styles.completeLabel}>
           {progressInPercentage}% Complete
         </Text>
@@ -31,22 +35,29 @@ export default function CourseCard({ name, progress, courseName }) {
     <Card style={[styles.card, { backgroundColor: theme.colors.background }]}>
       <Card.Title
         style={styles.header}
-        title={name}
+        title={course.name}
         titleStyle={[styles.ownerName, { color: theme.colors.secondary }]}
         left={OwnerAvatar}
         right={CourseName}
       />
       <View style={styles.body}>
-        <Image
-          style={styles.courseImage}
-          source={{ uri: "https://picsum.photos/700" }}
-        />
+        <View style={styles.leftBody}>
+          <Image style={styles.courseImage} source={{ uri: course.imgSrc }} />
+          <View style={styles.courseVideoCount}>
+            <Text style={styles.courseVideoCountLabel}>10 videos</Text>
+          </View>
+        </View>
+
         <View style={styles.rightBody}>
           <Card.Content>
             <Progress />
           </Card.Content>
           <Card.Actions>
-            <Button style={styles.button} onPress={() => {}} mode="contained">
+            <Button
+              mode="contained"
+              style={styles.button}
+              onPress={() => navigation.push("Course", { course: course })}
+            >
               View Course
             </Button>
           </Card.Actions>
@@ -73,7 +84,7 @@ const styles = StyleSheet.create({
   },
   ownerName: {
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 15,
   },
   completeLabel: {
     fontSize: 12,
@@ -83,7 +94,20 @@ const styles = StyleSheet.create({
     width: 170,
     height: 120,
     marginStart: 15,
-    borderRadius: 8,
+    borderRadius: 6,
+  },
+  courseVideoCount: {
+    position: "absolute",
+    left: 18,
+    top: 3,
+    borderRadius: 4,
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    backgroundColor: "rgba(0, 0, 0, 0.49)",
+  },
+  courseVideoCountLabel: {
+    fontSize: 6,
+    color: "white",
   },
   rightBody: {
     flex: 1,
