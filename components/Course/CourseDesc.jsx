@@ -1,37 +1,25 @@
-import { View, ScrollView, StyleSheet } from "react-native";
-import { Card, Avatar, Text } from "react-native-paper";
+import { View, ScrollView, StyleSheet, Image } from "react-native";
+import { Avatar, Text } from "react-native-paper";
 
 export default function CourseDesc({ course }) {
-  const OwnerAvatar = (props) => (
-    <Avatar.Image {...props} source={{ uri: course.avatarSrc }} />
-  );
-
-  const CourseName = () => (
-    <Text
-      variant="titleMedium"
-      style={{ fontWeight: "bold", textTransform: "uppercase" }}
-    >
-      {course.courseName}
-    </Text>
-  );
-
+  
   return (
     <ScrollView>
-      <Card
-        mode="contained"
-        style={[styles.card, { backgroundColor: theme.colors.background }]}
-      >
-        <Card.Title
-          style={styles.header}
-          title={course.name}
-          titleStyle={[styles.ownerName, { color: theme.colors.secondary }]}
-          left={OwnerAvatar}
-          right={CourseName}
+      <View style={styles.coverContainer}>
+        <Image style={{ height: "100%" }} source={{ uri: course.imgSrc }} />
+        <Avatar.Image
+          size={45}
+          style={styles.avatar}
+          source={{ uri: course.avatarSrc }}
         />
-      </Card>
-      <View>
-        <Text>Course Description:</Text>
-        <Text>
+        <Text variant="labelSmall" style={styles.ownersName}>
+          {course.name}
+        </Text>
+      </View>
+
+      <View style={styles.descContainer}>
+        <Text variant="titleMedium" style={styles.title}>Course Description:</Text>
+        <Text style={styles.paragraph}>
           HTML, or Hypertext Markup Language, is the foundation of web
           development. In this course, students will gain a comprehensive
           understanding of HTML and its role in creating web pages. Through a
@@ -39,8 +27,8 @@ export default function CourseDesc({ course }) {
           will learn the fundamentals of HTML syntax, structure, and semantics.
         </Text>
 
-        <Text>Course Objective:</Text>
-        <Text>
+        <Text variant="titleMedium" style={styles.title}>Course Objective:</Text>
+        <Text style={styles.paragraph}>
           Understand the basic concepts and principles of HTML. Learn how to
           create well-structured HTML documents using tags and elements. Gain
           proficiency in formatting text, adding images, and creating
@@ -55,8 +43,8 @@ export default function CourseDesc({ course }) {
           experience through hands-on projects and assignments.
         </Text>
 
-        <Text>Course Topic:</Text>
-        <Text>
+        <Text variant="titleMedium" style={styles.title}>Course Topic:</Text>
+        <Text style={styles.paragraph}>
           Introduction to HTML Basic HTML Document Structure Text Formatting and
           Styling Working with Links and Images Lists and Tables Forms and Input
           Elements Multimedia and Embedding Content Semantic HTML and
@@ -64,23 +52,37 @@ export default function CourseDesc({ course }) {
           and Coding Standards
         </Text>
       </View>
-
-      <View>
-        <Text>Learning Materials</Text>
-      </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    paddingRight: 6,
+  coverContainer: {
+    height: 300,
   },
-  header: {
-    paddingEnd: 14,
+  avatar: {
+    position: "absolute",
+    top: 8,
+    left: 8,
   },
-  ownerName: {
+  ownersName: {
+    position: "absolute",
+    bottom: 4,
+    right: 10,
+    textTransform: "uppercase",
+  },
+  descContainer: {
+    padding: 14
+  },
+  title: {
     fontWeight: "bold",
-    fontSize: 15,
+    marginBottom: 5,
   },
+  paragraph: {
+    fontSize: 15,
+    color: "dimgrey",
+    fontWeight: "normal",
+    marginBottom: 10,
+    textAlign: "justify"
+  }
 });
