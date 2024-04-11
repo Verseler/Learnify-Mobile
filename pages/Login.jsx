@@ -3,8 +3,7 @@ import { Feather } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
-import { View, Image } from "react-native";
-import {Appbar} from "react-native-paper";
+import { View } from "react-native";
 import {
   Button,
   Text,
@@ -13,8 +12,9 @@ import {
   Snackbar,
 } from "react-native-paper";
 
-import { formStyles as styles } from "../utils/globalStyles";
+import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
+import AppBar from "../components/AppBar";
 
 export default function Login({ navigation }) {
   const theme = useTheme();
@@ -116,27 +116,22 @@ export default function Login({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-       
-       <Appbar.Header style={[styles.header,{ backgroundColor: theme.colors.background }]}>
-        <Image
-          style={styles.logo}
-          source={require("../assets/Icons/Logo.png")}
-        />
-        <Appbar.Content title="Log In" titleStyle={{ fontWeight: "bold", fontSize: 26 }} />
-        <Image
-          style={styles.star}
-          source={require("../assets/Icons/star.png")}
-        />
-      </Appbar.Header>
-      
-      <View style={styles.form}>
+    <View style={formStyles.container}>
+      <AppBar
+        style={formStyles.header}
+        title="Log In"
+        titleSize={26}
+        logoSize={75}
+        hasStarIcon={true}
+      />
+
+      <View style={formStyles.form}>
         {/* Email Field */}
-        <View style={styles.formGroup}>
+        <View style={formStyles.formGroup}>
           <Text
             style={[
-              styles.fieldLabel,
-              formError.email && styles.errorfieldLabel,
+              formStyles.fieldLabel,
+              formError.email && formStyles.errorfieldLabel,
             ]}
           >
             Email address
@@ -146,7 +141,7 @@ export default function Login({ navigation }) {
             outlineColor="lightgray"
             theme={{ roundness: 10 }}
             style={[
-              styles.formControl,
+              formStyles.formControl,
               { backgroundColor: theme.colors.background },
             ]}
             value={email}
@@ -154,22 +149,22 @@ export default function Login({ navigation }) {
             error={formError.email}
           />
           <MaterialIcons
-            style={styles.fieldIcon}
+            style={formStyles.fieldIcon}
             name="email"
             size={18}
             color="gray"
           />
           {formError.email && (
-            <Text style={styles.errorLabel}>{formError.email}</Text>
+            <Text style={formStyles.errorLabel}>{formError.email}</Text>
           )}
         </View>
 
         {/* Password Field */}
-        <View style={styles.formGroup}>
+        <View style={formStyles.formGroup}>
           <Text
             style={[
-              styles.fieldLabel,
-              formError.password && styles.errorfieldLabel,
+              formStyles.fieldLabel,
+              formError.password && formStyles.errorfieldLabel,
             ]}
           >
             Password
@@ -180,7 +175,7 @@ export default function Login({ navigation }) {
             outlineColor="lightgray"
             theme={{ roundness: 10 }}
             style={[
-              styles.formControl,
+              formStyles.formControl,
               { backgroundColor: theme.colors.background },
             ]}
             value={password}
@@ -188,7 +183,7 @@ export default function Login({ navigation }) {
             error={formError.password}
           />
           <FontAwesome5
-            style={styles.fieldIcon}
+            style={formStyles.fieldIcon}
             name="key"
             color="gray"
             size={16}
@@ -196,14 +191,14 @@ export default function Login({ navigation }) {
           <Feather
             name={hidePassword ? "eye-off" : "eye"}
             size={24}
-            style={styles.eye}
+            style={formStyles.eye}
             color="gray"
             onPress={handleHidePassword}
           />
           {formError.password && (
-            <Text style={styles.errorLabel}>{formError.password}</Text>
+            <Text style={formStyles.errorLabel}>{formError.password}</Text>
           )}
-          <View style={styles.forgotPasswordWrapper}>
+          <View style={formStyles.forgotPasswordWrapper}>
             <Button
               rippleColor="white"
               theme={{ roundness: 2 }}
@@ -223,7 +218,7 @@ export default function Login({ navigation }) {
         >
           <Text
             style={[
-              styles.submitButtonLabel,
+              formStyles.submitButtonLabel,
               { color: theme.colors.onPrimary },
             ]}
           >
@@ -231,7 +226,8 @@ export default function Login({ navigation }) {
           </Text>
         </Button>
       </View>
-      <View style={styles.navLink}>
+      
+      <View style={formStyles.navLink}>
         <Text style={{ color: theme.colors.secondary }}>
           Don’t have an account?
         </Text>
@@ -244,8 +240,9 @@ export default function Login({ navigation }) {
         </Button>
       </View>
 
+      {/* Display server error response */}
       <Snackbar
-        style={styles.snackBar}
+        style={formStyles.snackBar}
         visible={serverError}
         onDismiss={onDismissSnackBarHandler}
       >

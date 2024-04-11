@@ -9,12 +9,11 @@ import useStore from "./hooks/useStore";
 import { getSecureStore } from "./utils/SecureStore";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import LandingPage from "./pages/LandingPage";
+import Main from "./pages/Main";
 import Course from "./pages/Course";
 
-const Stack = createNativeStackNavigator();
-
 export default function App() {
+  const Stack = createNativeStackNavigator();
   const userIsAuthenticated = useStore((state) => state.userIsAuthenticated);
   const signIn = useStore((state) => state.signIn);
 
@@ -35,15 +34,26 @@ export default function App() {
             animation: "fade",
           }}
         >
+          {/* Protected route: Only authenticated user or user that has token 
+          can access this pages */}
           {userIsAuthenticated ? (
             <>
-              <Stack.Screen name="LandingPage" component={LandingPage} />
+              <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="Course" component={Course} />
             </>
           ) : (
             <>
-              <Stack.Screen name="Login" component={Login} />
-              <Stack.Screen name="Signup" component={Signup} />
+              {/* This pages will show up if user is not authenticated */}
+              <Stack.Screen
+                name="Login"
+                options={{ headerShown: false }}
+                component={Login}
+              />
+              <Stack.Screen
+                name="Signup"
+                options={{ headerShown: false }}
+                component={Signup}
+              />
             </>
           )}
         </Stack.Navigator>

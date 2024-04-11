@@ -56,7 +56,7 @@ export default function CourseCard({ course }) {
             <Button
               mode="contained"
               style={styles.button}
-              onPress={() => navigation.push("Course", { course: course })}
+              onPress={() => navigation.navigate("Course", { course: course })}
             >
               View Course
             </Button>

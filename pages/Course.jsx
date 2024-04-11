@@ -8,10 +8,11 @@ import Forum from "../components/Course/Forum";
 
 export default function Course({ route }) {
   const Tab = createMaterialTopTabNavigator();
-  console.log(route.params.course);
+  const title = route.params.course.courseName;
+
   return (
     <>
-      <AppBar />
+      <AppBar hasBackAction={true} hasLogo={false} title={title} />
       <Tab.Navigator
         screenOptions={{
           tabBarScrollEnabled: true,

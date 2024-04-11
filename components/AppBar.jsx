@@ -1,30 +1,77 @@
 import { StyleSheet, Image } from "react-native";
 import { Appbar } from "react-native-paper";
+import { useNavigation } from "@react-navigation/native";
 
-export default function AppBar({ navigation }) {
+export default function AppBar({
+  style: customStyle,
+  hasBackAction,
+  hasLogo,
+  title,
+  titleSize,
+  logoSize,
+  hasProfileAvatar,
+  hasStarIcon,
+}) {
+  const navigation = useNavigation();
+  const logoSizeStyle = logoSize ?? 50;
+  const titleSizeStyle = titleSize ?? 22;
+  const hasLogoStyle = hasLogo ?? true;
+
   return (
-    <Appbar.Header style={{ backgroundColor: theme.colors.background }}>
-      <Image style={styles.logo} source={require("../assets/Icons/Logo.png")} />
-      <Appbar.Content title="Learnify" titleStyle={styles.title} />
-      <Appbar.Action
-        size={40}
-        color={theme.colors.primary}
-        icon="account-circle"
-        onPress={() => {}}
+    <Appbar.Header
+      style={[customStyle, { backgroundColor: theme.colors.background }]}
+    >
+      {hasBackAction && (
+        <Appbar.BackAction onPress={() => navigation.goBack()} />
+      )}
+      {hasLogoStyle && (
+        <Image
+          style={[
+            styles.logo,
+            {
+              height: logoSizeStyle,
+              width: logoSizeStyle,
+              marginStart: hasBackAction ? 0 : 6,
+            },
+          ]}
+          source={require("../assets/Icons/Logo.png")}
+        />
+      )}
+      <Appbar.Content
+        title={title}
+        titleStyle={[styles.title, { fontSize: titleSizeStyle }]}
       />
+      {hasProfileAvatar && (
+        <Appbar.Action
+          size={40}
+          color={theme.colors.primary}
+          icon="account-circle"
+          onPress={() => navigation.navigate("Profile")}
+        />
+      )}
+      {hasStarIcon && (
+        <Image
+          style={styles.star}
+          source={require("../assets/Icons/star.png")}
+        />
+      )}
     </Appbar.Header>
   );
 }
 
 const styles = StyleSheet.create({
   title: {
-    fontWeight: "bold" 
+    fontWeight: "bold",
   },
   logo: {
-    height: 50,
-    width: 50,
-    marginStart: 6,
     marginEnd: 10,
     objectFit: "contain",
   },
-})
+  star: {
+    position: "absolute",
+    height: 60,
+    width: 60,
+    right: 0,
+    top: -24,
+  },
+});

@@ -12,18 +12,6 @@ const formStyles = StyleSheet.create({
     columnGap: 6,
     marginBottom: 50,
   },
-  logo: {
-    height: 75,
-    width: 75,
-    objectFit: "contain",
-  },
-  star: {
-    position: "absolute",
-    height: 60,
-    width: 60,
-    right: 0,
-    top: -24,
-  },
   snackBar: {
     width: "100%",
     marginHorizontal: 14,
