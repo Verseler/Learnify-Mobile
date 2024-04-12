@@ -29,7 +29,9 @@ export default function Course({ route }) {
             <CourseDesc title="hello" course={route.params.course} {...props} />
           )}
         />
-        <Tab.Screen name="Materials" children={LearningMaterials} />
+        <Tab.Screen name="Materials" children={(props) => (
+            <LearningMaterials course={route.params.course} {...props} />
+          )} />
         <Tab.Screen name="Activity" children={Activity} />
         <Tab.Screen name="Forum" children={Forum} />
       </Tab.Navigator>
