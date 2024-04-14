@@ -1,7 +1,7 @@
 import { View, ScrollView, StyleSheet, Image } from "react-native";
 import { Avatar, Text } from "react-native-paper";
 
-export default function CourseDesc({ course }) {
+export default function Description({ course }) {
   return (
     <ScrollView>
       <View style={styles.coverContainer}>

@@ -1,7 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import AppBar from "../components/AppBar";
-import CourseDesc from "../components/Course/CourseDesc";
+import Description from "../components/Course/Description";
 import LearningMaterials from "../components/Course/LearningMaterials";
 import Activity from "../components/Course/Activity";
 import Forum from "../components/Course/Forum";
@@ -26,12 +26,15 @@ export default function Course({ route }) {
         <Tab.Screen
           name="Description"
           children={(props) => (
-            <CourseDesc title="hello" course={route.params.course} {...props} />
+            <Description title="hello" course={route.params.course} {...props} />
           )}
         />
-        <Tab.Screen name="Materials" children={(props) => (
+        <Tab.Screen
+          name="Materials"
+          children={(props) => (
             <LearningMaterials course={route.params.course} {...props} />
-          )} />
+          )}
+        />
         <Tab.Screen name="Activity" children={Activity} />
         <Tab.Screen name="Forum" children={Forum} />
       </Tab.Navigator>
