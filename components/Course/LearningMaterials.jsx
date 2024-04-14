@@ -1,10 +1,30 @@
 import { StyleSheet, ScrollView, View, Image } from "react-native";
-import { Text, Card } from "react-native-paper";
+import { Text } from "react-native-paper";
 
 import LearningMaterialCard from "./LearningMaterialCard";
 
-export default function LearningMaterials({course}) {
+export default function LearningMaterials({ course }) {
   const Materials = [];
+
+  const VideoLearningMaterials = Materials.map((item) => {
+    return (
+      <LearningMaterialCard
+        key={item.id}
+        imgSrc={item.imgSrc}
+        title={item.courseName}
+      />
+    );
+  });
+
+  const TextLearningMaterials = Materials.map((item) => {
+    return (
+      <LearningMaterialCard
+        key={item.id}
+        imgSrc={item.imgSrc}
+        title={item.courseName}
+      />
+    );
+  });
 
   return (
     <ScrollView style={styles.container}>
@@ -14,34 +34,16 @@ export default function LearningMaterials({course}) {
           Video Learning Materials
         </Text>
         <View style={styles.cards}>
-          {Materials.map((item) => {
-            return (
-              <LearningMaterialCard
-                key={item.id}
-                imgSrc={item.imgSrc}
-                title={item.courseName}
-              />
-            );
-          })}
+          {VideoLearningMaterials}
         </View>
       </View>
 
       {/*Text Learning Materials */}
       <View style={styles.section}>
         <Text variant="titleMedium" style={styles.title}>
-          Document Learning Materials
+          Text Learning Materials
         </Text>
-        <View style={styles.cards}>
-          {Materials.map((item) => {
-            return (
-              <LearningMaterialCard
-                key={item.id}
-                imgSrc={item.imgSrc}
-                title={item.courseName}
-              />
-            );
-          })}
-        </View>
+        <View style={styles.cards}>{TextLearningMaterials}</View>
       </View>
     </ScrollView>
   );

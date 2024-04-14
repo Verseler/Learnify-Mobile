@@ -1,6 +1,23 @@
-import { View } from "react-native"
+import { View } from "react-native";
+import { StyleSheet } from "react-native";
 
-export default  function Activity() {
-  return <View style={{ flex: 1, backgroundColor: "lightgray" }} />
+import ActivityCard from "./ActivityCard";
+
+export default function Activity() {
+  return <View style={styles.container}>
+    {/* !!! Use flatlist */}
+    <ActivityCard />
+    <ActivityCard />
+    <ActivityCard />
+    <ActivityCard />
+    <ActivityCard />
+  </View>;
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20,
+    paddingHorizontal: 14
+  },
+});
