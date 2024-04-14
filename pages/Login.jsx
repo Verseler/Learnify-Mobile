@@ -15,6 +15,7 @@ import {
 import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 import AppBar from "../components/AppBar";
+import socketAddress from "../utils/socketAddress";
 
 export default function Login({ navigation }) {
   const theme = useTheme();
@@ -87,7 +88,7 @@ export default function Login({ navigation }) {
     try {
       setIsLoading(true);
 
-      const url = "http://192.168.1.7:8000/api/login";
+      const url = `${socketAddress}/api/login`;
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },

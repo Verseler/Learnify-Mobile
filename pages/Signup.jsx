@@ -16,6 +16,7 @@ import {
 import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 import AppBar from "../components/AppBar";
+import socketAddress from "../utils/socketAddress";
 
 export default function Signup({ navigation }) {
   const theme = useTheme();
@@ -122,7 +123,7 @@ export default function Signup({ navigation }) {
     try {
       setIsLoading(true);
 
-      const url = "http://192.168.1.7:8000/api/signup";
+      const url = `${socketAddress}/api/signup`;
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
