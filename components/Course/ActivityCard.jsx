@@ -1,9 +1,15 @@
 import { Card } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 export default function ActivityCard() {
+  const navigation = useNavigation();
+
   return (
-    <Card onPress={() => console.log("open Quiz")} style={{backgroundColor: theme.colors.background}}>
+    <Card
+      onPress={() => navigation.navigate("Quiz")}
+      style={{ backgroundColor: theme.colors.background }}
+    >
       <View style={styles.contentWrapper}>
         <Card.Cover
           style={styles.image}
@@ -21,7 +27,7 @@ export default function ActivityCard() {
 const styles = StyleSheet.create({
   contentWrapper: {
     flexDirection: "row",
-    padding: 10
+    padding: 10,
   },
   image: {
     height: 70,

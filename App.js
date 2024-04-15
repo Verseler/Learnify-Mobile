@@ -11,6 +11,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Main from "./pages/Main";
 import Course from "./pages/Course";
+import Quiz from "./pages/Quiz";
 
 export default function App() {
   const Stack = createNativeStackNavigator();
@@ -40,6 +41,7 @@ export default function App() {
             <>
               <Stack.Screen name="Main" component={Main} />
               <Stack.Screen name="Course" component={Course} />
+              <Stack.Screen name="Quiz" component={Quiz} />
             </>
           ) : (
             <>

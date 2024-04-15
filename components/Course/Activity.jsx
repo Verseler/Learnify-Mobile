@@ -7,9 +7,13 @@ export default function Activity() {
   return <View style={styles.container}>
     {/* !!! Use flatlist */}
     <ActivityCard />
+    <View style={{height: 14}} />
     <ActivityCard />
+    <View style={{height: 14}} />
     <ActivityCard />
+    <View style={{height: 14}} />
     <ActivityCard />
+    <View style={{height: 14}} />
     <ActivityCard />
   </View>;
 }
