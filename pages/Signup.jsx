@@ -1,14 +1,9 @@
 import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
 import { View } from "react-native";
 import {
   Button,
   Text,
-  TextInput,
   useTheme,
   Snackbar,
 } from "react-native-paper";
@@ -17,6 +12,11 @@ import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 import AppBar from "../components/AppBar";
 import socketAddress from "../utils/socketAddress";
+import {
+  TextFormField,
+  PasswordFormField,
+  SubmitButton,
+} from "../components/FormField";
 
 export default function Signup({ navigation }) {
   const theme = useTheme();
@@ -162,184 +162,58 @@ export default function Signup({ navigation }) {
       />
 
       <View style={formStyles.form}>
-        {/* Name Field */}
-        <View style={formStyles.formGroup}>
-          <Text
-            style={[
-              formStyles.fieldLabel,
-              formError.name && formStyles.errorfieldLabel,
-            ]}
-          >
-            Name
-          </Text>
-          <TextInput
-            disabled={isLoading}
-            mode="outlined"
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              formStyles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={name}
-            onChangeText={setName}
-            error={formError.name}
-          />
-          <MaterialCommunityIcons
-            style={formStyles.fieldIcon}
-            name="account"
-            size={18}
-            color="gray"
-          />
-          {formError.name && (
-            <Text style={formStyles.errorLabel}>{formError.name}</Text>
-          )}
-        </View>
-        {/* Email Field */}
-        <View style={formStyles.formGroup}>
-          <Text
-            style={[
-              formStyles.fieldLabel,
-              formError.email && formStyles.errorfieldLabel,
-            ]}
-          >
-            Email address
-          </Text>
-          <TextInput
-            disabled={isLoading}
-            mode="outlined"
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              formStyles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={email}
-            onChangeText={setEmail}
-            error={formError.email}
-          />
-          <MaterialIcons
-            style={formStyles.fieldIcon}
-            name="email"
-            size={18}
-            color="gray"
-          />
-          {formError.email && (
-            <Text style={formStyles.errorLabel}>{formError.email}</Text>
-          )}
-        </View>
+        <TextFormField
+          label="Name"
+          value={name}
+          setValue={setName}
+          formError={formError.name}
+          icon="account"
+          isLoading={isLoading}
+        />
+        <TextFormField
+          label="Email"
+          value={email}
+          setValue={setEmail}
+          formError={formError.email}
+          icon="email"
+          isLoading={isLoading}
+        />
 
-        {/* Password Field */}
-        <View style={formStyles.formGroup}>
-          <Text
-            style={[
-              formStyles.fieldLabel,
-              formError.password && formStyles.errorfieldLabel,
-            ]}
-          >
-            Password
-          </Text>
-          <TextInput
-            disabled={isLoading}
-            mode="outlined"
-            secureTextEntry={hidePassword}
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              formStyles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={password}
-            onChangeText={setPassword}
-            error={formError.password}
-          />
-          <Feather
-            name={hidePassword ? "eye-off" : "eye"}
-            size={24}
-            style={formStyles.eye}
-            color="gray"
-            disabled={isLoading}
-            onPress={handleHidePassword}
-          />
-          <FontAwesome5
-            style={formStyles.fieldIcon}
-            name="key"
-            color="gray"
-            size={16}
-          />
-          {formError.password && (
-            <Text style={formStyles.errorLabel}>{formError.password}</Text>
-          )}
-        </View>
+        <PasswordFormField
+          label="Password"
+          value={password}
+          setValue={setPassword}
+          formError={formError.password}
+          icon="key"
+          hidePassword={hidePassword}
+          handleHidePassword={handleHidePassword}
+          isLoading={isLoading}
+        />
 
-        {/* Confirm Password Field */}
-        <View style={formStyles.formGroup}>
-          <Text
-            style={[
-              formStyles.fieldLabel,
-              formError.confirmPassword && formStyles.errorfieldLabel,
-            ]}
-          >
-            Confirm Password
-          </Text>
-          <TextInput
-            disabled={isLoading}
-            mode="outlined"
-            secureTextEntry={hideConfirmPassword}
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              formStyles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            error={formError.confirmPassword}
-          />
-          <FontAwesome5
-            style={formStyles.fieldIcon}
-            name="key"
-            color="gray"
-            size={16}
-          />
-          <Feather
-            name={hideConfirmPassword ? "eye-off" : "eye"}
-            size={24}
-            style={formStyles.eye}
-            color="gray"
-            disabled={isLoading}
-            onPress={handleConfirmHidePassword}
-          />
-          {formError.confirmPassword && (
-            <Text style={formStyles.errorLabel}>
-              {formError.confirmPassword}
-            </Text>
-          )}
-        </View>
-        <Button
-          loading={isLoading}
-          disabled={isLoading}
-          theme={{ roundness: 2 }}
-          style={{ marginTop: 12 }}
-          mode="contained"
-          onPress={handleSubmitForm}
-        >
-          <Text
-            style={[
-              formStyles.submitButtonLabel,
-              { color: theme.colors.onPrimary },
-            ]}
-          >
-            Create Account
-          </Text>
-        </Button>
+        <PasswordFormField
+          label="Confirm Password"
+          value={confirmPassword}
+          setValue={setConfirmPassword}
+          formError={formError.confirmPassword}
+          icon="key"
+          hidePassword={hideConfirmPassword}
+          handleHidePassword={handleConfirmHidePassword}
+          isLoading={isLoading}
+        />
+
+        <SubmitButton
+          isLoading={isLoading}
+          handleSubmitForm={handleSubmitForm}
+          label="Creaet Account"
+        />
       </View>
+
       <View style={formStyles.navLink}>
         <Text style={{ color: theme.colors.secondary }}>
           Already have an account?
         </Text>
         <Button
-        disabled={isLoading}
+          disabled={isLoading}
           rippleColor="white"
           theme={{ roundness: 2 }}
           onPress={() => navigation.dispatch(StackActions.replace("Login"))}

@@ -1,21 +1,17 @@
 import { useState } from "react";
-import { Feather } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
 import { StackActions } from "@react-navigation/native";
 import { View } from "react-native";
-import {
-  Button,
-  Text,
-  TextInput,
-  useTheme,
-  Snackbar,
-} from "react-native-paper";
+import { Button, Text, useTheme, Snackbar } from "react-native-paper";
 
 import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 import AppBar from "../components/AppBar";
 import socketAddress from "../utils/socketAddress";
+import {
+  TextFormField,
+  PasswordFormField,
+  SubmitButton,
+} from "../components/FormField";
 
 export default function Login({ navigation }) {
   const theme = useTheme();
@@ -127,110 +123,33 @@ export default function Login({ navigation }) {
       />
 
       <View style={formStyles.form}>
-        {/* Email Field */}
-        <View style={formStyles.formGroup}>
-          <Text
-            style={[
-              formStyles.fieldLabel,
-              formError.email && formStyles.errorfieldLabel,
-            ]}
-          >
-            Email address
-          </Text>
-          <TextInput
-            disabled={isLoading}
-            mode="outlined"
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              formStyles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={email}
-            onChangeText={setEmail}
-            error={formError.email}
-          />
-          <MaterialIcons
-            style={formStyles.fieldIcon}
-            name="email"
-            size={18}
-            color="gray"
-          />
-          {formError.email && (
-            <Text style={formStyles.errorLabel}>{formError.email}</Text>
-          )}
-        </View>
+        <TextFormField
+          label="Email"
+          value={email}
+          setValue={setEmail}
+          formError={formError.email}
+          icon="email"
+          isLoading={isLoading}
+        />
 
-        {/* Password Field */}
-        <View style={formStyles.formGroup}>
-          <Text
-            style={[
-              formStyles.fieldLabel,
-              formError.password && formStyles.errorfieldLabel,
-            ]}
-          >
-            Password
-          </Text>
-          <TextInput
-            disabled={isLoading}
-            mode="outlined"
-            secureTextEntry={hidePassword}
-            outlineColor="lightgray"
-            theme={{ roundness: 10 }}
-            style={[
-              formStyles.formControl,
-              { backgroundColor: theme.colors.background },
-            ]}
-            value={password}
-            onChangeText={setPassword}
-            error={formError.password}
-          />
-          <FontAwesome5
-            style={formStyles.fieldIcon}
-            name="key"
-            color="gray"
-            size={16}
-          />
-          <Feather
-            name={hidePassword ? "eye-off" : "eye"}
-            size={24}
-            style={formStyles.eye}
-            color="gray"
-            disabled={isLoading}
-            onPress={handleHidePassword}
-          />
-          {formError.password && (
-            <Text style={formStyles.errorLabel}>{formError.password}</Text>
-          )}
-          <View style={formStyles.forgotPasswordWrapper}>
-            <Button
-              rippleColor="white"
-              theme={{ roundness: 2 }}
-              textColor={theme.colors.onSurface}
-              onPress={() => console.log("forgot")}
-            >
-              Forgot Password?
-            </Button>
-          </View>
-        </View>
-        <Button
-          loading={isLoading}
-          disabled={isLoading}
-          theme={{ roundness: 2 }}
-          mode="contained"
-          onPress={handleSubmitForm}
-        >
-          <Text
-            style={[
-              formStyles.submitButtonLabel,
-              { color: theme.colors.onPrimary },
-            ]}
-          >
-            Login
-          </Text>
-        </Button>
+        <PasswordFormField
+          label="Password"
+          value={password}
+          setValue={setPassword}
+          formError={formError.password}
+          icon="key"
+          hidePassword={hidePassword}
+          handleHidePassword={handleHidePassword}
+          isLoading={isLoading}
+        />
+
+        <SubmitButton
+          isLoading={isLoading}
+          handleSubmitForm={handleSubmitForm}
+          label="Creaet Account"
+        />
       </View>
-      
+
       <View style={formStyles.navLink}>
         <Text style={{ color: theme.colors.secondary }}>
           Don’t have an account?
