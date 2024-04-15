@@ -173,6 +173,7 @@ export default function Signup({ navigation }) {
             Name
           </Text>
           <TextInput
+            disabled={isLoading}
             mode="outlined"
             outlineColor="lightgray"
             theme={{ roundness: 10 }}
@@ -205,6 +206,7 @@ export default function Signup({ navigation }) {
             Email address
           </Text>
           <TextInput
+            disabled={isLoading}
             mode="outlined"
             outlineColor="lightgray"
             theme={{ roundness: 10 }}
@@ -238,6 +240,7 @@ export default function Signup({ navigation }) {
             Password
           </Text>
           <TextInput
+            disabled={isLoading}
             mode="outlined"
             secureTextEntry={hidePassword}
             outlineColor="lightgray"
@@ -255,6 +258,7 @@ export default function Signup({ navigation }) {
             size={24}
             style={formStyles.eye}
             color="gray"
+            disabled={isLoading}
             onPress={handleHidePassword}
           />
           <FontAwesome5
@@ -279,6 +283,7 @@ export default function Signup({ navigation }) {
             Confirm Password
           </Text>
           <TextInput
+            disabled={isLoading}
             mode="outlined"
             secureTextEntry={hideConfirmPassword}
             outlineColor="lightgray"
@@ -302,6 +307,7 @@ export default function Signup({ navigation }) {
             size={24}
             style={formStyles.eye}
             color="gray"
+            disabled={isLoading}
             onPress={handleConfirmHidePassword}
           />
           {formError.confirmPassword && (
@@ -333,6 +339,7 @@ export default function Signup({ navigation }) {
           Already have an account?
         </Text>
         <Button
+        disabled={isLoading}
           rippleColor="white"
           theme={{ roundness: 2 }}
           onPress={() => navigation.dispatch(StackActions.replace("Login"))}
