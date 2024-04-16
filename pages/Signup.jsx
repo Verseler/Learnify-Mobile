@@ -199,7 +199,7 @@ export default function Signup({ navigation }) {
 
         <SubmitButton
           isLoading={isLoading}
-          handleSubmitForm={handleSubmitForm}
+          handleSubmitForm={() => signIn("123")}
           label="Create Account"
         />
       </View>

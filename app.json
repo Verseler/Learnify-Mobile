@@ -21,17 +21,26 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.verseler.Learnify"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-      ["expo-build-properties", {
-        "android": {
-          "usesCleartextTraffic": true
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
         }
-      }]
-    ]
+      ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "b8b83fdc-be10-4e48-b423-43d871d569aa"
+      }
+    }
   }
 }
