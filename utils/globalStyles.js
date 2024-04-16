@@ -28,7 +28,7 @@ const formStyles = StyleSheet.create({
   },
   formControl: {
     borderRadius: 20,
-    paddingStart: 24
+    paddingStart: 24,
   },
   fieldLabel: {
     marginLeft: 6,
@@ -43,12 +43,12 @@ const formStyles = StyleSheet.create({
   },
   fieldIcon: {
     position: "absolute",
-    top: 46,
+    top: 20,
     left: 14
   },
   eye: {
     position: "absolute",
-    top: 42,
+    top: 16,
     right: 15,
   },
   forgotPasswordWrapper: {

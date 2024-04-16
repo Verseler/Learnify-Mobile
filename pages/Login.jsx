@@ -145,8 +145,8 @@ export default function Login({ navigation }) {
 
         <SubmitButton
           isLoading={isLoading}
-          handleSubmitForm={handleSubmitForm}
-          label="Creaet Account"
+          handleSubmitForm={() => signIn("123")}
+          label="Login"
         />
       </View>
 

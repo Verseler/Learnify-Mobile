@@ -1,12 +1,7 @@
 import { useState } from "react";
 import { StackActions } from "@react-navigation/native";
 import { View } from "react-native";
-import {
-  Button,
-  Text,
-  useTheme,
-  Snackbar,
-} from "react-native-paper";
+import { Button, Text, useTheme, Snackbar } from "react-native-paper";
 
 import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
@@ -152,7 +147,8 @@ export default function Signup({ navigation }) {
   }
 
   return (
-    <View style={formStyles.container}>
+    
+    <View style={[formStyles.container]}>
       <AppBar
         style={formStyles.header}
         title="Sign Up"
@@ -204,7 +200,7 @@ export default function Signup({ navigation }) {
         <SubmitButton
           isLoading={isLoading}
           handleSubmitForm={handleSubmitForm}
-          label="Creaet Account"
+          label="Create Account"
         />
       </View>
 

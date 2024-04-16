@@ -90,8 +90,12 @@ const styles = StyleSheet.create({
     fontSize: 12,
     textAlign: "right",
   },
+  leftBody: {
+    width: "45%",
+    marginRight: 10
+  },
   courseImage: {
-    width: 170,
+    width: "100%",
     height: 120,
     marginStart: 15,
     borderRadius: 6,

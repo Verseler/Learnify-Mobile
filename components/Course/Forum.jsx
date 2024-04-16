@@ -7,7 +7,6 @@ export default function Forum() {
   return (
     <View style={styles.container}>
       <ForumComment />
-      <ForumComment />
       <ForumComment role="user" />
 
       <KeyboardAvoidingView style={styles.bottomFields}>

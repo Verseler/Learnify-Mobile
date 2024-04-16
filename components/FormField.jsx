@@ -52,34 +52,36 @@ export function PasswordFormField({
       >
         {label}
       </Text>
-      <TextInput
-        disabled={isLoading}
-        mode="outlined"
-        secureTextEntry={hidePassword}
-        outlineColor="lightgray"
-        theme={{ roundness: 10 }}
-        style={[
-          formStyles.formControl,
-          { backgroundColor: theme.colors.background },
-        ]}
-        value={value}
-        onChangeText={setValue}
-        error={formError}
-      />
-      <MaterialCommunityIcons
-        name={hidePassword ? "eye-off" : "eye"}
-        size={24}
-        style={formStyles.eye}
-        color="gray"
-        disabled={isLoading}
-        onPress={handleHidePassword}
-      />
-      <FontAwesome5
-        style={formStyles.fieldIcon}
-        name={icon}
-        color="gray"
-        size={16}
-      />
+      <View style={formStyles.formControlFieldWrapper}>
+        <TextInput
+          disabled={isLoading}
+          mode="outlined"
+          secureTextEntry={hidePassword}
+          outlineColor="lightgray"
+          theme={{ roundness: 10 }}
+          style={[
+            formStyles.formControl,
+            { backgroundColor: theme.colors.background },
+          ]}
+          value={value}
+          onChangeText={setValue}
+          error={formError}
+        />
+        <MaterialCommunityIcons
+          name={hidePassword ? "eye-off" : "eye"}
+          size={24}
+          style={formStyles.eye}
+          color="gray"
+          disabled={isLoading}
+          onPress={handleHidePassword}
+        />
+        <FontAwesome5
+          style={formStyles.fieldIcon}
+          name={icon}
+          color="gray"
+          size={16}
+        />
+      </View>
       {formError && <Text style={formStyles.errorLabel}>{formError}</Text>}
     </View>
   );
@@ -102,25 +104,27 @@ export function TextFormField({
       >
         {label}
       </Text>
-      <TextInput
-        disabled={isLoading}
-        mode="outlined"
-        outlineColor="lightgray"
-        theme={{ roundness: 10 }}
-        style={[
-          formStyles.formControl,
-          { backgroundColor: theme.colors.background },
-        ]}
-        value={value}
-        onChangeText={setValue}
-        error={formError}
-      />
-      <MaterialCommunityIcons
-        style={formStyles.fieldIcon}
-        name={icon}
-        size={18}
-        color="gray"
-      />
+      <View style={formStyles.formControlFieldWrapper}>
+        <TextInput
+          disabled={isLoading}
+          mode="outlined"
+          outlineColor="lightgray"
+          theme={{ roundness: 10 }}
+          style={[
+            formStyles.formControl,
+            { backgroundColor: theme.colors.background },
+          ]}
+          value={value}
+          onChangeText={setValue}
+          error={formError}
+        />
+        <MaterialCommunityIcons
+          style={formStyles.fieldIcon}
+          name={icon}
+          size={18}
+          color="gray"
+        />
+      </View>
       {formError && <Text style={formStyles.errorLabel}>{formError}</Text>}
     </View>
   );
