@@ -145,7 +145,7 @@ export default function Login({ navigation }) {
 
         <SubmitButton
           isLoading={isLoading}
-          handleSubmitForm={() => signIn("123")}
+          handleSubmitForm={handleSubmitForm}
           label="Login"
         />
       </View>
