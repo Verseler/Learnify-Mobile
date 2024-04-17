@@ -9,7 +9,6 @@ const formStyles = StyleSheet.create({
     backgroundColor: "white",
   },
   header: {
-    columnGap: 6,
     marginBottom: 50,
   },
   snackBar: {

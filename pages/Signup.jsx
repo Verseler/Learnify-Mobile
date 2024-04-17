@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { StackActions } from "@react-navigation/native";
-import { View } from "react-native";
+import { View, ScrollView, KeyboardAvoidingView } from "react-native";
 import { Button, Text, useTheme, Snackbar } from "react-native-paper";
 
 import { formStyles } from "../utils/globalStyles";
@@ -148,7 +148,13 @@ export default function Signup({ navigation }) {
 
   return (
     
-    <View style={[formStyles.container]}>
+    <ScrollView
+      contentContainerStyle={[
+        formStyles.container,
+        { justifyContent: "flex-start" },
+      ]}
+    >
+      <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={0}>
       <AppBar
         style={formStyles.header}
         title="Sign Up"
@@ -157,53 +163,57 @@ export default function Signup({ navigation }) {
         hasStarIcon={true}
       />
 
+
       <View style={formStyles.form}>
-        <TextFormField
-          label="Name"
-          value={name}
-          setValue={setName}
-          formError={formError.name}
-          icon="account"
-          isLoading={isLoading}
-        />
-        <TextFormField
-          label="Email"
-          value={email}
-          setValue={setEmail}
-          formError={formError.email}
-          icon="email"
-          isLoading={isLoading}
-        />
+       
+          <TextFormField
+            label="Name"
+            value={name}
+            setValue={setName}
+            formError={formError.name}
+            icon="account"
+            isLoading={isLoading}
+          />
+          <TextFormField
+            label="Email"
+            value={email}
+            setValue={setEmail}
+            formError={formError.email}
+            icon="email"
+            isLoading={isLoading}
+          />
 
-        <PasswordFormField
-          label="Password"
-          value={password}
-          setValue={setPassword}
-          formError={formError.password}
-          icon="key"
-          hidePassword={hidePassword}
-          handleHidePassword={handleHidePassword}
-          isLoading={isLoading}
-        />
+          <PasswordFormField
+            label="Password"
+            value={password}
+            setValue={setPassword}
+            formError={formError.password}
+            icon="key"
+            hidePassword={hidePassword}
+            handleHidePassword={handleHidePassword}
+            isLoading={isLoading}
+          />
 
-        <PasswordFormField
-          label="Confirm Password"
-          value={confirmPassword}
-          setValue={setConfirmPassword}
-          formError={formError.confirmPassword}
-          icon="key"
-          hidePassword={hideConfirmPassword}
-          handleHidePassword={handleConfirmHidePassword}
-          isLoading={isLoading}
-        />
+          <PasswordFormField
+            label="Confirm Password"
+            value={confirmPassword}
+            setValue={setConfirmPassword}
+            formError={formError.confirmPassword}
+            icon="key"
+            hidePassword={hideConfirmPassword}
+            handleHidePassword={handleConfirmHidePassword}
+            isLoading={isLoading}
+          />
 
-        <SubmitButton
-          isLoading={isLoading}
-          handleSubmitForm={handleSubmitForm}
-          label="Create Account"
-        />
+          <SubmitButton
+            isLoading={isLoading}
+            handleSubmitForm={handleSubmitForm}
+            label="Create Account"
+          />
+       
       </View>
-
+      </KeyboardAvoidingView>
+     
       <View style={formStyles.navLink}>
         <Text style={{ color: theme.colors.secondary }}>
           Already have an account?
@@ -226,6 +236,7 @@ export default function Signup({ navigation }) {
       >
         {serverError}
       </Snackbar>
-    </View>
+    </ScrollView>
+
   );
 }

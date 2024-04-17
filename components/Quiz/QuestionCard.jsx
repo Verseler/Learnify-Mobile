@@ -50,8 +50,9 @@ export default function QuestionCard() {
 
 
 const styles = StyleSheet.create({
-  selected: {},
-  container: {},
+  container: {
+    marginBottom: 30
+  },
   questionWrapper: {
     marginBottom: 16,
     rowGap: 8,

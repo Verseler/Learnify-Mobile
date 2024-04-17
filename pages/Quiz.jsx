@@ -26,7 +26,13 @@ export default function Quiz() {
         <QuestionCard />
         <QuestionCard />
 
-        <Button style={styles.submitButton} onPress={() => console.log("submit quiz")} mode="contained">Submit</Button>
+        <Button
+          style={styles.submitButton}
+          onPress={() => console.log("submit quiz")}
+          mode="contained"
+        >
+          Submit
+        </Button>
       </View>
     </ScrollView>
   );
@@ -54,6 +60,6 @@ const styles = StyleSheet.create({
   submitButton: {
     marginTop: 20,
     borderRadius: 10,
-    padding: 2
-  }
+    padding: 2,
+  },
 });

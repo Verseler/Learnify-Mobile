@@ -3,7 +3,7 @@ import { Text } from "react-native-paper";
 
 import LearningMaterialCard from "./LearningMaterialCard";
 
-export default function LearningMaterials({ course }) {
+export default function LearningMaterials({ materials }) {
   const Materials = [ {
     id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
     name: "Hazel Mondejar",

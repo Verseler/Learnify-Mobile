@@ -1,16 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
 import { Text, Searchbar } from "react-native-paper";
 
 import CourseCard from "../components/CourseCard";
 import AppBar from "../components/AppBar";
+import socketAddress from "../utils/socketAddress";
+import { getSecureStore } from "../utils/SecureStore";
 
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
+  const userToken = getSecureStore("userToken");
+  const originCourseData = [];
+  const [courses, setCourses] = useState(originCourseData);
 
-  const TopContent = () => (
+  useEffect(() => {
+    const filteredCourses = originCourseData.filter((course) =>
+      course.title.includes(searchQuery.toLowerCase())
+    );
+    setCourses(filteredCourses);
+  }, [searchQuery]);
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+
+  const getCourses = async () => {
+    try {
+      const url = `${socketAddress}/api/dashboard`;
+      const requestOptions = {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: userToken,
+        },
+      };
+      const res = await fetch(url, requestOptions);
+      const data = await res.json();
+      console.log(data);
+      // setCourses(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const TopContent = (
     <>
-      <Text style={styles.heading} variant="titleSmall">
+      <Text style={styles.heading} variant="labelMedium">
         Take IT education experience to the next level.
       </Text>
       <Searchbar
@@ -36,8 +71,17 @@ export default function Home() {
       <AppBar hasProfileAvatar={true} title="Learnify" />
 
       <FlatList
-        data={DATA}
+        data={courses}
         renderItem={({ item }) => <CourseCard course={item} />}
+        ListEmptyComponent={
+          <Text
+            style={{
+              color: theme.colors.secondary,
+            }}
+          >
+            Not enrolled to a course
+          </Text>
+        }
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={{ height: 26 }} />}
         style={styles.body}
@@ -70,39 +114,3 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
 });
-
-
-
-//Sample Daat
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    name: "Hazel Mondejar",
-    avatarSrc:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjdx6kwUFu3LgLTVh0t2t38H4-RjFPOQdPr0JunoiQRQ&s",
-    progress: 0,
-    courseName: "HTML",
-    imgSrc:
-      "https://pixelmechanics.com.sg/wp-content/uploads/2019/06/html5-logo-for-web-development.png",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    name: "Belle Pimentel",
-    avatarSrc:
-      "https://static.vecteezy.com/system/resources/previews/004/773/704/non_2x/a-girl-s-face-with-a-beautiful-smile-a-female-avatar-for-a-website-and-social-network-vector.jpg",
-    progress: 0.2,
-    courseName: "CSS",
-    imgSrc:
-      "https://pixelmechanics.com.sg/wp-content/uploads/2019/04/css.jpg",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    name: "James Nangcas",
-    avatarSrc:
-      "https://img.freepik.com/premium-vector/male-avatar-flat-icon-design-vector-illustration_549488-103.jpg",
-    progress: 0.5,
-    courseName: "Javascript",
-    imgSrc:
-      "https://miro.medium.com/v2/resize:fit:785/1*H-25KB7EbSHjv70HXrdl6w.png",
-  },
-];

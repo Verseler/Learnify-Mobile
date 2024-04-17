@@ -5,8 +5,12 @@ import { useNavigation } from "@react-navigation/native";
 export default function CourseCard({ course }) {
   const navigation = useNavigation();
 
-  const OwnerAvatar = (props) => (
-    <Avatar.Image {...props} source={{ uri: course.avatarSrc }} />
+  const InstructorAvatar = (props) => (
+    <Avatar.Image
+      {...props}
+      style={{ backgroundColor: theme.colors.surface }}
+      source={require("../assets/Icons/instructor.jpg")}
+    />
   );
 
   const CourseName = () => (
@@ -14,16 +18,17 @@ export default function CourseCard({ course }) {
       variant="titleMedium"
       style={{ fontWeight: "bold", textTransform: "uppercase" }}
     >
-      {course.courseName}
+      {course.title}
     </Text>
   );
 
   const Progress = () => {
-    const progressInPercentage = course.progress * 100;
+    const progress = Number(course.progress);
+    const progressInPercentage = progress * 100;
 
     return (
       <View style={{ gap: 4 }}>
-        <ProgressBar progress={course.progress} />
+        <ProgressBar progress={progress} />
         <Text style={styles.completeLabel}>
           {progressInPercentage}% Complete
         </Text>
@@ -35,14 +40,17 @@ export default function CourseCard({ course }) {
     <Card style={[styles.card, { backgroundColor: theme.colors.background }]}>
       <Card.Title
         style={styles.header}
-        title={course.name}
-        titleStyle={[styles.ownerName, { color: theme.colors.secondary }]}
-        left={OwnerAvatar}
+        title={course.instructor_name}
+        titleStyle={[styles.instructorName, { color: theme.colors.secondary }]}
+        left={InstructorAvatar}
         right={CourseName}
       />
       <View style={styles.body}>
         <View style={styles.leftBody}>
-          <Image style={styles.courseImage} source={{ uri: course.imgSrc }} />
+          <Image
+            style={styles.courseImage}
+            source={{ uri: course.image_path }}
+          />
           <View style={styles.courseVideoCount}>
             <Text style={styles.courseVideoCountLabel}>10 videos</Text>
           </View>
@@ -56,7 +64,12 @@ export default function CourseCard({ course }) {
             <Button
               mode="contained"
               style={styles.button}
-              onPress={() => navigation.navigate("Course", { course: course })}
+              onPress={() =>
+                navigation.navigate("Course", {
+                  id: course.course_id,
+                  imgPath: course.image_path,
+                })
+              }
             >
               View Course
             </Button>
@@ -82,9 +95,9 @@ const styles = StyleSheet.create({
   header: {
     paddingEnd: 14,
   },
-  ownerName: {
+  instructorName: {
     fontWeight: "bold",
-    fontSize: 15,
+    fontSize: 14,
   },
   completeLabel: {
     fontSize: 12,
@@ -92,7 +105,7 @@ const styles = StyleSheet.create({
   },
   leftBody: {
     width: "45%",
-    marginRight: 10
+    marginRight: 10,
   },
   courseImage: {
     width: "100%",

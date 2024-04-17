@@ -16,6 +16,7 @@ export default function Profile() {
   const signOut = useStore((state) => state.signOut);
   const userToken = getSecureStore("userToken");
   const theme = useTheme();
+  console.log(userToken)
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

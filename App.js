@@ -60,6 +60,8 @@ export default function App() {
           )}
         </Stack.Navigator>
       </NavigationContainer>
+
+      <StatusBar style="dark" />
     </PaperProvider>
   );
 }
