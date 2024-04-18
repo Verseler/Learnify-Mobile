@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, View, FlatList } from "react-native";
-import { Text, Searchbar } from "react-native-paper";
+import { Text, Searchbar, Snackbar } from "react-native-paper";
 
 import CourseCard from "../components/CourseCard";
 import AppBar from "../components/AppBar";
@@ -10,11 +10,12 @@ import { getSecureStore } from "../utils/SecureStore";
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
   const userToken = getSecureStore("userToken");
-  const originCourseData = [];
-  const [courses, setCourses] = useState(originCourseData);
+  const [serverError, setServerError] = useState("");
+  let originalCourseData = [];
+  const [courses, setCourses] = useState(originalCourseData);
 
   useEffect(() => {
-    const filteredCourses = originCourseData.filter((course) =>
+    const filteredCourses = originalCourseData.filter((course) =>
       course.title.includes(searchQuery.toLowerCase())
     );
     setCourses(filteredCourses);
@@ -22,6 +23,7 @@ export default function Home() {
 
   useEffect(() => {
     getCourses();
+    console.log(courses);
   }, []);
 
   const getCourses = async () => {
@@ -31,17 +33,20 @@ export default function Home() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: userToken,
+          Authorization: `Bearer ${userToken}`,
         },
       };
       const res = await fetch(url, requestOptions);
-      const data = await res.json();
-      console.log(data);
-      // setCourses(data);
+      const convertedData = await res.json();
+
+      originalCourseData = convertedData.data;
+      setCourses(convertedData.data);
     } catch (error) {
-      console.log(error);
+      setServerError(error);
     }
   };
+
+  const onDismissSnackBarHandler = () => setServerError("");
 
   const TopContent = (
     <>
@@ -72,7 +77,7 @@ export default function Home() {
 
       <FlatList
         data={courses}
-        renderItem={({ item }) => <CourseCard course={item} />}
+        renderItem={({ item }) => <CourseCard key={item.id} course={item} />}
         ListEmptyComponent={
           <Text
             style={{
@@ -87,6 +92,15 @@ export default function Home() {
         style={styles.body}
         ListHeaderComponent={TopContent}
       />
+
+      {/* Display server error response */}
+      <Snackbar
+        style={styles.snackBar}
+        visible={serverError}
+        onDismiss={onDismissSnackBarHandler}
+      >
+        {serverError}
+      </Snackbar>
     </View>
   );
 }
@@ -112,5 +126,10 @@ const styles = StyleSheet.create({
   courseListLabel: {
     marginTop: 24,
     marginBottom: 8,
+  },
+  snackBar: {
+    width: "100%",
+    marginHorizontal: 14,
+    backgroundColor: "red",
   },
 });

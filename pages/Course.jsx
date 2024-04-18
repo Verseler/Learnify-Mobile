@@ -7,8 +7,10 @@ import LearningMaterials from "../components/Course/LearningMaterials";
 import Activity from "../components/Course/Activity";
 import Forum from "../components/Course/Forum";
 import socketAddress from "../utils/socketAddress";
+import { getSecureStore } from "../utils/SecureStore";
 
 export default function Course({ route }) {
+  const userToken = getSecureStore("userToken");
   const Tab = createMaterialTopTabNavigator();
   const id = route.params.id;
   const imgPath = route.params.imgPath;
@@ -25,13 +27,13 @@ export default function Course({ route }) {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: userToken,
+          Authorization: `Bearer ${userToken}`,
         },
       };
       const res = await fetch(url, requestOptions);
-      const data = await res.json();
-      console.log(data);
-      // setCourses(data);
+      const convertedData = await res.json();
+
+      setCourse(convertedData.data);
     } catch (error) {
       console.log(error);
     }
