@@ -1,5 +1,7 @@
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { useEffect, useState } from "react";
+import { Snackbar } from "react-native-paper";
+import { StyleSheet } from "react-native";
 
 import AppBar from "../components/AppBar";
 import Description from "../components/Course/Description";
@@ -11,6 +13,7 @@ import { getSecureStore } from "../utils/SecureStore";
 
 export default function Course({ route }) {
   const userToken = getSecureStore("userToken");
+  const [serverError, setServerError] = useState("");
   const Tab = createMaterialTopTabNavigator();
   const id = route.params.id;
   const imgPath = route.params.imgPath;
@@ -35,9 +38,11 @@ export default function Course({ route }) {
 
       setCourse(convertedData.data);
     } catch (error) {
-      console.log(error);
+      setServerError(error);
     }
   };
+
+  const onDismissSnackBarHandler = () => setServerError("");
 
   return (
     <>
@@ -75,6 +80,23 @@ export default function Course({ route }) {
         <Tab.Screen name="Activity" children={Activity} />
         <Tab.Screen name="Forum" children={Forum} />
       </Tab.Navigator>
+
+      {/* Display server error response */}
+      <Snackbar
+        style={styles.snackBar}
+        visible={serverError}
+        onDismiss={onDismissSnackBarHandler}
+      >
+        {serverError}
+      </Snackbar>
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  snackBar: {
+    width: "100%",
+    marginHorizontal: 14,
+    backgroundColor: "red",
+  },
+});
