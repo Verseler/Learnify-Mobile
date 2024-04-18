@@ -10,13 +10,13 @@ export default function Description({
   topics,
 }) {
   const courseObjectives = objectives?.map((objective, index) => (
-    <Text style={styles.paragraph}>
+    <Text key={index} style={styles.paragraph}>
       {index + 1} {objective}
     </Text>
   ));
 
   const courseTopics = topics?.map((topic, index) => (
-    <Text style={styles.paragraph}>
+    <Text key={index} style={styles.paragraph}>
       {index + 1} {topic}
     </Text>
   ));

@@ -2,7 +2,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Home from "./Home";
-import Profile from "./Profile";
+import Setting from "./Setting";
 
 export default function Main() {
   const Tab = createBottomTabNavigator();
@@ -38,15 +38,15 @@ export default function Main() {
           tabBarIcon: ({ color, size }) => {
             return (
               <MaterialCommunityIcons
-                name="account"
+                name="nut"
                 size={size}
                 color={color}
               />
             );
           },
         }}
-        name="Profile"
-        component={Profile}
+        name="Setting"
+        component={Setting}
       />
     </Tab.Navigator>
   );
