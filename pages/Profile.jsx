@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { View, StyleSheet, ScrollView } from "react-native";
-import { Text, Button, Avatar, useTheme, Snackbar } from "react-native-paper";
+import { Text, Button, Avatar, useTheme, Snackbar, List } from "react-native-paper";
 
 import { getSecureStore } from "../utils/SecureStore";
 import useStore from "../hooks/useStore";

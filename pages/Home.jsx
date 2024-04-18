@@ -8,10 +8,11 @@ import socketAddress from "../utils/socketAddress";
 import { getSecureStore } from "../utils/SecureStore";
 
 export default function Home() {
+  const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const userToken = getSecureStore("userToken");
   const [serverError, setServerError] = useState("");
-  let originalCourseData = [];
+  const [originalCourseData, setOriginalCourseData] = useState([]);
   const [courses, setCourses] = useState(originalCourseData);
 
   useEffect(() => {
@@ -23,10 +24,10 @@ export default function Home() {
 
   useEffect(() => {
     getCourses();
-    console.log(courses);
   }, []);
 
   const getCourses = async () => {
+    setRefreshing(true);
     try {
       const url = `${socketAddress}/api/dashboard`;
       const requestOptions = {
@@ -39,10 +40,12 @@ export default function Home() {
       const res = await fetch(url, requestOptions);
       const convertedData = await res.json();
 
-      originalCourseData = convertedData.data;
+      setOriginalCourseData(convertedData.data);
       setCourses(convertedData.data);
     } catch (error) {
       setServerError(error);
+    } finally {
+      setRefreshing(false);
     }
   };
 
@@ -77,6 +80,8 @@ export default function Home() {
 
       <FlatList
         data={courses}
+        onRefresh={getCourses}
+        refreshing={refreshing}
         renderItem={({ item }) => <CourseCard key={item.id} course={item} />}
         ListEmptyComponent={
           <Text
