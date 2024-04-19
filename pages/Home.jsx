@@ -4,7 +4,7 @@ import { Text, Searchbar, Snackbar } from "react-native-paper";
 
 import CourseCard from "../components/CourseCard";
 import AppBar from "../components/AppBar";
-import socketAddress from "../utils/socketAddress";
+import baseURL from "../utils/baseURL";
 import { getSecureStore } from "../utils/SecureStore";
 
 export default function Home() {
@@ -29,7 +29,7 @@ export default function Home() {
   const getCourses = async () => {
     setRefreshing(true);
     try {
-      const url = `${socketAddress}/api/dashboard`;
+      const url = `${baseURL}/api/dashboard`;
       const requestOptions = {
         method: "GET",
         headers: {

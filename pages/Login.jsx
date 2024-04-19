@@ -6,7 +6,7 @@ import { Button, Text, useTheme, Snackbar } from "react-native-paper";
 import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 import AppBar from "../components/AppBar";
-import socketAddress from "../utils/socketAddress";
+import baseURL from "../utils/baseURL";
 import {
   TextFormField,
   PasswordFormField,
@@ -84,7 +84,7 @@ export default function Login({ navigation }) {
     try {
       setIsLoading(true);
 
-      const url = `${socketAddress}/api/login`;
+      const url = `${baseURL}/api/login`;
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },

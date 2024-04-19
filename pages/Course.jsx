@@ -8,7 +8,7 @@ import Description from "../components/Course/Description";
 import LearningMaterials from "../components/Course/LearningMaterials";
 import Activity from "../components/Course/Activity";
 import Forum from "../components/Course/Forum";
-import socketAddress from "../utils/socketAddress";
+import baseURL from "../utils/baseURL";
 import { getSecureStore } from "../utils/SecureStore";
 
 export default function Course({ route }) {
@@ -25,7 +25,7 @@ export default function Course({ route }) {
 
   const getCourse = async () => {
     try {
-      const url = `${socketAddress}/api/course/${id}`;
+      const url = `${baseURL}/api/course/${id}`;
       const requestOptions = {
         method: "GET",
         headers: {

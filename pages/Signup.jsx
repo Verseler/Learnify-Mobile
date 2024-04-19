@@ -6,7 +6,7 @@ import { Button, Text, useTheme, Snackbar } from "react-native-paper";
 import { formStyles } from "../utils/globalStyles";
 import useStore from "../hooks/useStore";
 import AppBar from "../components/AppBar";
-import socketAddress from "../utils/socketAddress";
+import baseURL from "../utils/baseURL";
 import {
   TextFormField,
   PasswordFormField,
@@ -118,7 +118,7 @@ export default function Signup({ navigation }) {
     try {
       setIsLoading(true);
 
-      const url = `${socketAddress}/api/signup`;
+      const url = `${baseURL}/api/signup`;
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -147,7 +147,6 @@ export default function Signup({ navigation }) {
   }
 
   return (
-    
     <ScrollView
       contentContainerStyle={[
         formStyles.container,
@@ -155,17 +154,15 @@ export default function Signup({ navigation }) {
       ]}
     >
       <KeyboardAvoidingView behavior="position" keyboardVerticalOffset={0}>
-      <AppBar
-        style={formStyles.header}
-        title="Sign Up"
-        titleSize={26}
-        logoSize={75}
-        hasStarIcon={true}
-      />
+        <AppBar
+          style={formStyles.header}
+          title="Sign Up"
+          titleSize={26}
+          logoSize={75}
+          hasStarIcon={true}
+        />
 
-
-      <View style={formStyles.form}>
-       
+        <View style={formStyles.form}>
           <TextFormField
             label="Name"
             value={name}
@@ -210,10 +207,9 @@ export default function Signup({ navigation }) {
             handleSubmitForm={handleSubmitForm}
             label="Create Account"
           />
-       
-      </View>
+        </View>
       </KeyboardAvoidingView>
-     
+
       <View style={formStyles.navLink}>
         <Text style={{ color: theme.colors.secondary }}>
           Already have an account?
@@ -237,6 +233,5 @@ export default function Signup({ navigation }) {
         {serverError}
       </Snackbar>
     </ScrollView>
-
   );
 }
