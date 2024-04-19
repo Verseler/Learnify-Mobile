@@ -1,6 +1,7 @@
 import { View, StyleSheet, ScrollView } from "react-native";
 import { useTheme, List } from "react-native-paper";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 import { getSecureStore } from "../utils/SecureStore";
 import useStore from "../hooks/useStore";
@@ -10,6 +11,7 @@ export default function Setting() {
   const signOut = useStore((state) => state.signOut);
   const userToken = getSecureStore("userToken");
   const theme = useTheme();
+  const navigation = useNavigation();
   console.log(userToken);
 
   return (
@@ -29,7 +31,7 @@ export default function Setting() {
               color="black"
             />
           )}
-          onPress={() => console.log("personal Info")}
+          onPress={() => navigation.push("PersonalInfo")}
         />
         <List.Item
           title="Security"
@@ -41,7 +43,7 @@ export default function Setting() {
               color="black"
             />
           )}
-          onPress={() => console.log("security")}
+          onPress={() => navigation.push("Security")}
         />
         <List.Item
           rippleColor="pink"
