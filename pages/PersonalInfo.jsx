@@ -1,5 +1,5 @@
 import { View, StyleSheet } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Appbar, Avatar, Snackbar } from "react-native-paper";
 import { TextFormField, SubmitButton } from "../components/FormField";
 import { useNavigation } from "@react-navigation/native";
@@ -18,6 +18,37 @@ export default function PersonalInfo() {
     password: "",
     confirmPassword: "",
   });
+
+  useEffect(() => {
+    
+  }, []);
+
+  const getUserPersonalInfo = async () => {
+    try {
+      //get user name and email to populate the fields
+
+      const url = `${socketAddress}/api/`;
+      const requestOptions = {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      };
+      const res = await fetch(url, requestOptions);
+      const data = await res.json();
+
+      //if signup failed display error message
+      if (!data["success"]) {
+        setServerError(data.message);
+      }
+      else {
+        //populate name and email textfields of the user
+        setName(data.name);
+        setEmail(data.email);
+      }
+    } catch (error) {
+      setServerError(error.message);
+    }
+  }
+
 
   /* Handlers */
   const onDismissSnackBarHandler = () => setServerError("");
@@ -65,12 +96,11 @@ export default function PersonalInfo() {
 
       const url = `${socketAddress}/api/`;
       const requestOptions = {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name,
           email: email,
-          password: password,
         }),
       };
       const res = await fetch(url, requestOptions);

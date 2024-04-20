@@ -1,6 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useState } from "react";
-import { Appbar, Avatar, Snackbar } from "react-native-paper";
+import { Appbar, Snackbar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
 import { formStyles } from "../utils/globalStyles";
@@ -102,12 +102,10 @@ export default function Security() {
 
       const url = `${socketAddress}/api/`;
       const requestOptions = {
-        method: "POST",
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
+          password: newPassword,
         }),
       };
       const res = await fetch(url, requestOptions);
