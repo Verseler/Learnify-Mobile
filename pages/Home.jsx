@@ -8,11 +8,23 @@ import baseURL from "../utils/baseURL";
 import { getSecureStore } from "../utils/SecureStore";
 
 export default function Home() {
+  const userToken = getSecureStore("userToken");
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
-  const userToken = getSecureStore("userToken");
   const [serverError, setServerError] = useState("");
-  const [originalCourseData, setOriginalCourseData] = useState([]);
+  //temp data, delete the value of this state later
+  const [originalCourseData, setOriginalCourseData] = useState([
+    {
+      instructor_name: "kero",
+      progress: 0.8,
+      title: "Intro to Javascript",
+      image_path:
+        "https://miro.medium.com/v2/resize:fit:785/1*H-25KB7EbSHjv70HXrdl6w.png",
+      course_id: 1,
+      objectives: ["1. osas", "2. dream"],
+      topics: ["1. dom", "2. virtual dom"],
+    },
+  ]);
   const [courses, setCourses] = useState(originalCourseData);
 
   useEffect(() => {
@@ -38,12 +50,19 @@ export default function Home() {
         },
       };
       const res = await fetch(url, requestOptions);
-      const convertedData = await res.json();
+      const { data } = await res.json();
 
-      setOriginalCourseData(convertedData.data);
-      setCourses(convertedData.data);
+      //if get request error then display the error
+      if (!data["success"]) {
+        setServerError(data.message);
+      }
+      //else store the data
+      else {
+        setOriginalCourseData(data);
+        setCourses(data);
+      }
     } catch (error) {
-      setServerError(error);
+      setServerError(error.message);
     } finally {
       setRefreshing(false);
     }
@@ -79,23 +98,21 @@ export default function Home() {
       <AppBar hasProfileAvatar={true} title="Learnify" />
 
       <FlatList
+        style={styles.body}
         data={courses}
         onRefresh={getCourses}
         refreshing={refreshing}
-        renderItem={({ item }) => <CourseCard key={item.id} course={item} />}
+        renderItem={({ item }) => (
+          <CourseCard key={item.course_id} course={item} />
+        )}
+        keyExtractor={(item) => item.course_id}
+        ListHeaderComponent={TopContent}
         ListEmptyComponent={
-          <Text
-            style={{
-              color: theme.colors.secondary,
-            }}
-          >
+          <Text style={{ color: theme.colors.secondary }}>
             Not enrolled to a course
           </Text>
         }
-        keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={{ height: 26 }} />}
-        style={styles.body}
-        ListHeaderComponent={TopContent}
       />
 
       {/* Display server error response */}

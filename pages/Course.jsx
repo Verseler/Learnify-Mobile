@@ -17,7 +17,7 @@ export default function Course({ route }) {
   const Tab = createMaterialTopTabNavigator();
   const id = route.params.id;
   const imgPath = route.params.imgPath;
-  const [course, setCourse] = useState(null);
+  const [course, setCourse] = useState({});
 
   useEffect(() => {
     getCourse();
@@ -38,7 +38,7 @@ export default function Course({ route }) {
 
       setCourse(convertedData.data);
     } catch (error) {
-      setServerError(error);
+      setServerError(error.message);
     }
   };
 
@@ -77,7 +77,9 @@ export default function Course({ route }) {
             <LearningMaterials materials={course?.materials} {...props} />
           )}
         />
-        <Tab.Screen name="Activity" children={Activity} />
+        <Tab.Screen name="Activity" children={(props) => (
+            <Activity activities={course?.activities} {...props} />
+          )} />
         <Tab.Screen name="Forum" children={Forum} />
       </Tab.Navigator>
 
@@ -95,7 +97,6 @@ export default function Course({ route }) {
 
 const styles = StyleSheet.create({
   snackBar: {
-    width: "100%",
     marginHorizontal: 14,
     backgroundColor: "red",
   },
