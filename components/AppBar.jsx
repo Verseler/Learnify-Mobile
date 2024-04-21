@@ -1,4 +1,4 @@
-import { StyleSheet, Image } from "react-native";
+import { StyleSheet, Image, View } from "react-native";
 import { Appbar } from "react-native-paper";
 import { useNavigation } from "@react-navigation/native";
 
@@ -42,12 +42,12 @@ export default function AppBar({
         titleStyle={[styles.title, { fontSize: titleSizeStyle }]}
       />
       {hasProfileAvatar && (
-        <Appbar.Action
-          size={40}
-          color={theme.colors.primary}
-          icon="account-circle"
-          onPress={() => navigation.navigate("Profile")}
-        />
+        <View style={{ marginEnd: 10 }}>
+          <Image
+            style={{ height: 33, width: 33 }}
+            source={require("../assets/Icons/account_icon.png")}
+          />
+        </View>
       )}
       {hasStarIcon && (
         <Image
