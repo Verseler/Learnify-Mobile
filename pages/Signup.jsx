@@ -82,6 +82,18 @@ export default function Signup({ navigation }) {
       });
       errorCount++;
     }
+    console.log(/[A-Z]/.test(password))
+    //check if password have at least one uppercase letter
+    if (!/[A-Z]/.test(password)) {
+      setFormError((prevFormError) => {
+        return {
+          ...prevFormError,
+          password: "Should have atleast 1 uppercase character",
+        };
+      });
+      errorCount++;
+    }
+
     //check if password is more than 8 characters
     if (password.length < 8) {
       setFormError((prevFormError) => {
