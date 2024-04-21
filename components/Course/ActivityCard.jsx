@@ -2,22 +2,22 @@ import { Card } from "react-native-paper";
 import { StyleSheet, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-export default function ActivityCard() {
+export default function ActivityCard({title, id}) {
   const navigation = useNavigation();
 
   return (
     <Card
-      onPress={() => navigation.navigate("Quiz")}
-      style={{ backgroundColor: theme.colors.background }}
+      onPress={() => navigation.navigate("Quiz", {id: id})}
+      style={[styles.card, { backgroundColor: theme.colors.background }]}
     >
       <View style={styles.contentWrapper}>
         <Card.Cover
           style={styles.image}
-          source={require("../../assets/Icons/pdfCover.png")}
+          source={require("../../assets/Icons/quizCover.png")}
         />
         <Card.Title
           style={styles.title}
-          title="Quiz 1: Test your markup knowledge"
+          title={title}
         />
       </View>
     </Card>
@@ -25,6 +25,9 @@ export default function ActivityCard() {
 }
 
 const styles = StyleSheet.create({
+  card: {
+    marginBottom: 16,
+  },
   contentWrapper: {
     flexDirection: "row",
     padding: 10,

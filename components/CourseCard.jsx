@@ -23,15 +23,12 @@ export default function CourseCard({ course }) {
   );
 
   const Progress = () => {
-    const progress = Number(course.progress);
-    const progressInPercentage = progress * 100;
+    const progressDecimal = course.progress.replace("%", "") * 0.01;
 
     return (
       <View style={{ gap: 4 }}>
-        <ProgressBar progress={progress} />
-        <Text style={styles.completeLabel}>
-          {progressInPercentage}% Complete
-        </Text>
+        <ProgressBar progress={progressDecimal} />
+        <Text style={styles.completeLabel}>{course.progress}% Complete</Text>
       </View>
     );
   };
@@ -49,7 +46,7 @@ export default function CourseCard({ course }) {
         <View style={styles.leftBody}>
           <Image
             style={styles.courseImage}
-            source={{ uri: course.image_path }}
+            source={require("../assets/Icons/tempCover.jpg")}
           />
           <View style={styles.courseVideoCount}>
             <Text style={styles.courseVideoCountLabel}>10 videos</Text>
@@ -108,10 +105,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   courseImage: {
-    width: "100%",
-    height: 120,
+    // width: "100%",
+    // height: 120,
     marginStart: 15,
     borderRadius: 6,
+    height: "100%",
+    width: "100%",
+    objectFit: "cover",
   },
   courseVideoCount: {
     position: "absolute",

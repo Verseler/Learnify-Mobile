@@ -12,21 +12,9 @@ export default function Home() {
   const [refreshing, setRefreshing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [serverError, setServerError] = useState("");
-  //temp data, delete the value of this state later
-  const [originalCourseData, setOriginalCourseData] = useState([
-    {
-      instructor_name: "kero",
-      progress: 0.8,
-      title: "Intro to Javascript",
-      image_path:
-        "https://miro.medium.com/v2/resize:fit:785/1*H-25KB7EbSHjv70HXrdl6w.png",
-      course_id: 1,
-      objectives: ["1. osas", "2. dream"],
-      topics: ["1. dom", "2. virtual dom"],
-    },
-  ]);
+  const [originalCourseData, setOriginalCourseData] = useState([]);
   const [courses, setCourses] = useState(originalCourseData);
-
+  console.log(userToken)
   useEffect(() => {
     const filteredCourses = originalCourseData.filter((course) =>
       course.title.includes(searchQuery.toLowerCase())
@@ -50,11 +38,11 @@ export default function Home() {
         },
       };
       const res = await fetch(url, requestOptions);
-      const { data } = await res.json();
+      const { data, success, message } = await res.json();
 
       //if get request error then display the error
-      if (!data["success"]) {
-        setServerError(data.message);
+      if (!success) {
+        setServerError(message);
       }
       //else store the data
       else {
@@ -96,20 +84,17 @@ export default function Home() {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <AppBar hasProfileAvatar={true} title="Learnify" />
-
       <FlatList
         style={styles.body}
         data={courses}
         onRefresh={getCourses}
         refreshing={refreshing}
-        renderItem={({ item }) => (
-          <CourseCard key={item.course_id} course={item} />
-        )}
+        renderItem={({ item }) => <CourseCard course={item} />}
         keyExtractor={(item) => item.course_id}
         ListHeaderComponent={TopContent}
         ListEmptyComponent={
           <Text style={{ color: theme.colors.secondary }}>
-            Not enrolled to a course
+            No Available Courses
           </Text>
         }
         ItemSeparatorComponent={() => <View style={{ height: 26 }} />}

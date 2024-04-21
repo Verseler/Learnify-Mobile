@@ -34,9 +34,16 @@ export default function Course({ route }) {
         },
       };
       const res = await fetch(url, requestOptions);
-      const convertedData = await res.json();
+      const { data, success, message } = await res.json();
 
-      setCourse(convertedData.data);
+      //if get request error then display the error
+      if (!success) {
+        setServerError(message);
+      }
+      //else store the data
+      else {
+        setCourse(data);
+      }
     } catch (error) {
       setServerError(error.message);
     }
@@ -77,10 +84,16 @@ export default function Course({ route }) {
             <LearningMaterials materials={course?.materials} {...props} />
           )}
         />
-        <Tab.Screen name="Activity" children={(props) => (
+        <Tab.Screen
+          name="Activity"
+          children={(props) => (
             <Activity activities={course?.activities} {...props} />
-          )} />
-        <Tab.Screen name="Forum" children={Forum} />
+          )}
+        />
+        <Tab.Screen
+          name="Forum"
+          children={(props) => <Forum forums={course?.forums} {...props} />}
+        />
       </Tab.Navigator>
 
       {/* Display server error response */}

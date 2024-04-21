@@ -24,7 +24,7 @@ export default function Description({
   return (
     <ScrollView>
       <View style={styles.coverContainer}>
-        <Image style={{ height: "100%" }} source={{ uri: image }} />
+        <Image style={{ height: "100%", width: "100%", objectFit: "cover" }} source={require("../../assets/Icons/tempCover.jpg")} />
         <Avatar.Image
           size={45}
           style={styles.avatar}

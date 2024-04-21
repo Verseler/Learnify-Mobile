@@ -21,7 +21,7 @@ export default function Setting() {
       <AppBar hasProfileAvatar={true} title="Learnify" />
 
       <ScrollView style={styles.content}>
-        <List.Item
+        {/* <List.Item
           title="Personal Info"
           style={styles.list}
           right={() => (
@@ -44,7 +44,7 @@ export default function Setting() {
             />
           )}
           onPress={() => navigation.push("Security")}
-        />
+        /> */}
         <List.Item
           rippleColor="pink"
           title="Logout"

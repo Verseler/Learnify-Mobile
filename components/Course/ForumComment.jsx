@@ -1,43 +1,33 @@
 import { StyleSheet, View, Text } from "react-native";
 
-export default function ForumComment({ role }) {
-
-  const UserComment = (
+export function ReplyComment({message}) {
+  return (
     <View style={[styles.container, styles.userComment]}>
       <View style={[styles.comment]}>
-        <Text style={styles.commentator}>Verseler kerr Handuman</Text>
-        <Text style={styles.content}>
-          {" "}
-          What role do HTML forms play in gathering user input on a website?
-          Have you experimented with different form elements such as text
-          fields, checkboxes, radio buttons, and dropdown menus?
-        </Text>
+        <Text style={styles.commentator}>Anonymous</Text>
+        <Text style={styles.content}>{message}</Text>
       </View>
-
-      <Text style={styles.timeStampt}>02:58 PM</Text>
+      {/* <Text style={styles.timeStampt}>02:58 PM</Text> */}
     </View>
   );
+}
 
-  const OtherComment = (
+export function PostComment({message}) {
+  return (
     <View style={[styles.container, styles.otherComment]}>
-      <View style={[styles.comment]}>
-        <Text style={styles.commentator}>Verseler kerr Handuman</Text>
-        <Text style={styles.content}>
-          {" "}
-          What role do HTML forms play in gathering user input on a website?
-          Have you experimented with different form elements such as text
-          fields, checkboxes, radio buttons, and dropdown menus?
-        </Text>
-      </View>
-      <Text style={styles.timeStampt}>02:58 PM</Text>
+    <View style={[styles.comment]}>
+      <Text style={styles.commentator}>Anonymous</Text>
+      <Text style={styles.content}>{message}</Text>
     </View>
+    {/* <Text style={styles.timeStampt}>02:58 PM</Text> */}
+  </View>
   );
-
-  return <View>{role == "user" ? UserComment : OtherComment}</View>;
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginBottom: 20
+  },
   userComment: {
     marginLeft: 40,
     alignSelf: "flex-end",

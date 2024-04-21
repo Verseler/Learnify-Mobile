@@ -1,13 +1,39 @@
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
-import ForumComment from "./ForumComment";
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+  ScrollView,
+} from "react-native";
+import { Text } from "react-native-paper";
+import { ReplyComment, PostComment } from "./ForumComment";
 import { TextInput } from "react-native-paper";
 import { Ionicons } from "@expo/vector-icons";
 
-export default function Forum() {
+export default function Forum({ forums }) {
+  const renderItems = ({ item, index }) => {
+    if (item.length <= 0) {
+      return;
+    }
+    if (item.includes("Reply")) {
+      return <PostComment key={index} message={item} />;
+    } else {
+      return <ReplyComment key={index} message={item} />;
+    }
+  };
+
   return (
     <View style={styles.container}>
-      <ForumComment />
-      <ForumComment role="user" />
+      <FlatList
+        style={styles.body}
+        contentContainerStyle={{ paddingBottom: 50 }}
+        data={forums}
+        renderItem={renderItems}
+        keyExtractor={(item, index) => index}
+        ListEmptyComponent={
+          <Text style={{ color: theme.colors.secondary }}>No Forums</Text>
+        }
+      />
 
       <KeyboardAvoidingView style={styles.bottomFields}>
         <TextInput mode="outlined" style={styles.commentField} />
@@ -20,8 +46,12 @@ export default function Forum() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  body: {
+    flex: 1,
     paddingVertical: 20,
     paddingHorizontal: 14,
+    marginBottom: 80,
   },
   bottomFields: {
     position: "absolute",
